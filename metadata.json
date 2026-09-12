@@ -1,0 +1,6 @@
+{
+  "name": "Centro de Soporte y Base de Conocimiento",
+  "description": "Base de conocimiento interactiva y guías de resolución técnica organizadas por categorías y subcategorías.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
