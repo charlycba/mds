@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Subcategory } from '../types';
 import { ShieldAlert, Clock, ArrowRight, Layers, UserCheck } from 'lucide-react';
 import { ScrambleText } from './ScrambleText';
@@ -14,11 +14,42 @@ export const KnowledgeCardsGrid: React.FC<KnowledgeCardsGridProps> = ({
   categoryName,
 }) => {
   const { data } = subcategory;
+  const rootRef = useRef<HTMLDivElement>(null);
 
   const hasSpecialCases = Boolean(data.casosEspeciales && data.casosEspeciales.length > 0);
 
+  // Rebote de las cards al cambiar de tema: saltan y se acomodan en su lugar.
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const cards = Array.from(
+      root.querySelectorAll<HTMLElement>('[id^="card-"], #sev1-critical-banner'),
+    );
+    const animations = cards.map((card, index) =>
+      card.animate(
+        [
+          { transform: 'translateY(14px) scale(0.96)', opacity: 0.5 },
+          { transform: 'translateY(-16px) scale(1.03)', opacity: 1, offset: 0.35 },
+          { transform: 'translateY(0) scale(0.995)', offset: 0.62 },
+          { transform: 'translateY(-6px) scale(1.01)', offset: 0.8 },
+          { transform: 'translateY(0) scale(1)', opacity: 1 },
+        ],
+        {
+          duration: 720,
+          delay: index * 70,
+          easing: 'ease-out',
+          fill: 'both',
+        },
+      ),
+    );
+
+    return () => animations.forEach((animation) => animation.cancel());
+  }, [subcategory.id]);
+
   return (
-    <div className="w-full space-y-6" id={`content-section-${subcategory.id}`}>
+    <div ref={rootRef} className="w-full space-y-6" id={`content-section-${subcategory.id}`}>
       {/* Subcategory Header & Metadata */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-3 border-b border-slate-200">
         <div>
