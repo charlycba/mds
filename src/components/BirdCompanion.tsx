@@ -14,10 +14,11 @@ const POSED_BEHAVIORS: { className: string; duration: number }[] = [
 ];
 
 /**
- * Pajaro companero que vuela al boton presionado (categorias y subcategorias)
- * y se posa sobre su borde superior. Una vez posado, a los >=3s realiza
- * comportamientos aleatorios: caminar por el borde, ponerse de frente, sentarse,
- * saltar, aletear o comer.
+ * Pajaro companero.
+ * - Vuela al boton presionado (categorias y subcategorias) y se posa en su borde.
+ * - Al hacer click sobre el, vuela a la derecha del buscador y se queda quieto
+ *   pegado a la parte inferior del header. Al tocarlo ahi aletea y queda listo
+ *   para volver a interactuar con los botones.
  */
 export const BirdCompanion: React.FC = () => {
   const birdRef = useRef<HTMLDivElement>(null);
@@ -25,7 +26,9 @@ export const BirdCompanion: React.FC = () => {
   const animRef = useRef<Animation | null>(null);
   const idleTimerRef = useRef<number | undefined>(undefined);
   const behaviorTimerRef = useRef<number | undefined>(undefined);
+  const flapTimerRef = useRef<number | undefined>(undefined);
   const currentButtonRef = useRef<HTMLElement | null>(null);
+  const dockedRef = useRef(false);
 
   useEffect(() => {
     const bird = birdRef.current;
@@ -38,21 +41,18 @@ export const BirdCompanion: React.FC = () => {
     bird.style.transform = `translate3d(${initialX}px, ${initialY}px, 0)`;
 
     const docCoords = () => ({ scrollX: window.scrollX, scrollY: window.scrollY });
-
     const currentPosition = () => {
       const r = bird.getBoundingClientRect();
       const { scrollX, scrollY } = docCoords();
       return { x: r.left + scrollX, y: r.top + scrollY };
     };
 
+    const faceTowards = (fromX: number, toX: number) => {
+      inner.style.transform = toX < fromX ? 'scaleX(-1)' : 'scaleX(1)';
+    };
+
     const clearBehaviorClasses = () => {
-      bird.classList.remove(
-        'is-busy',
-        'is-walking',
-        'is-sitting',
-        'is-jumping',
-        'is-flapping',
-      );
+      bird.classList.remove('is-busy', 'is-walking', 'is-sitting', 'is-jumping', 'is-flapping');
     };
 
     const clearIdle = () => {
@@ -71,7 +71,6 @@ export const BirdCompanion: React.FC = () => {
       clearBehaviorClasses();
       bird.classList.add('is-busy');
 
-      // 1 de cada 6 veces camina por el borde; el resto, comportamiento aleatorio.
       if (Math.random() < 1 / 6) {
         walk();
         return;
@@ -100,7 +99,7 @@ export const BirdCompanion: React.FC = () => {
       const targetX = minX + Math.random() * Math.max(1, maxX - minX);
       const target = { x: targetX, y: start.y };
 
-      inner.style.transform = target.x < start.x ? 'scaleX(-1)' : 'scaleX(1)';
+      faceTowards(start.x, target.x);
       bird.classList.add('is-walking');
       bird.style.transform = `translate3d(${start.x}px, ${start.y}px, 0)`;
       animRef.current?.cancel();
@@ -121,25 +120,14 @@ export const BirdCompanion: React.FC = () => {
       animRef.current = anim;
     };
 
-    const flyTo = (el: HTMLElement) => {
-      clearIdle();
-      currentButtonRef.current = el;
-      bird.classList.remove('is-perched');
-
-      const { scrollX, scrollY } = docCoords();
-      const rect = el.getBoundingClientRect();
-      const start = currentPosition();
-      const target = {
-        x: rect.left + scrollX + rect.width / 2 - BIRD_WIDTH / 2,
-        y: rect.top + scrollY - BIRD_HEIGHT + 6,
-      };
-
-      inner.style.transform = target.x < start.x ? 'scaleX(-1)' : 'scaleX(1)';
-
+    const animateFlight = (
+      start: { x: number; y: number },
+      target: { x: number; y: number },
+      onArrive: () => void,
+    ) => {
       if (reduceMotion) {
         bird.style.transform = `translate3d(${target.x}px, ${target.y}px, 0)`;
-        bird.classList.add('is-perched');
-        scheduleNextBehavior();
+        onArrive();
         return;
       }
 
@@ -176,14 +164,105 @@ export const BirdCompanion: React.FC = () => {
       const anim = bird.animate(keyframes, { duration, easing: 'ease-in-out', fill: 'forwards' });
       anim.onfinish = () => {
         bird.classList.remove('is-flying');
-        bird.classList.add('is-perched');
         bird.style.transform = `translate3d(${target.x}px, ${target.y}px, 0)`;
-        scheduleNextBehavior();
+        onArrive();
       };
       animRef.current = anim;
     };
 
+    const flyTo = (el: HTMLElement) => {
+      clearIdle();
+      currentButtonRef.current = el;
+      dockedRef.current = false;
+      bird.classList.remove('is-perched', 'is-docked');
+
+      const { scrollX, scrollY } = docCoords();
+      const rect = el.getBoundingClientRect();
+      const start = currentPosition();
+      const target = {
+        x: rect.left + scrollX + rect.width / 2 - BIRD_WIDTH / 2,
+        y: rect.top + scrollY - BIRD_HEIGHT + 6,
+      };
+      faceTowards(start.x, target.x);
+
+      animateFlight(start, target, () => {
+        bird.classList.add('is-perched');
+        scheduleNextBehavior();
+      });
+    };
+
+    const dockToHeader = () => {
+      clearIdle();
+      currentButtonRef.current = null;
+      dockedRef.current = true;
+      bird.classList.remove('is-perched', 'is-docked');
+
+      const start = currentPosition();
+      const { scrollX, scrollY } = docCoords();
+      const header = document.querySelector('header');
+
+      let target = { ...start };
+      if (header) {
+        const hRect = header.getBoundingClientRect();
+        const search = document.getElementById('input-global-search');
+        const desiredX = search
+          ? search.getBoundingClientRect().right + scrollX + 12
+          : hRect.right + scrollX - BIRD_WIDTH - 12;
+        target = {
+          x: Math.min(desiredX, hRect.right + scrollX - BIRD_WIDTH - 8),
+          y: hRect.bottom + scrollY - BIRD_HEIGHT + 6,
+        };
+      }
+      faceTowards(start.x, target.x);
+
+      animateFlight(start, target, () => {
+        bird.classList.add('is-docked');
+      });
+    };
+
+    // Al cargar la pagina el pajaro arranca desactivado, posado en el header.
+    const startDocked = () => {
+      const header = document.querySelector('header');
+      if (!header) return;
+      const hRect = header.getBoundingClientRect();
+      const search = document.getElementById('input-global-search');
+      const { scrollX, scrollY } = docCoords();
+      const desiredX = search
+        ? search.getBoundingClientRect().right + scrollX + 12
+        : hRect.right + scrollX - BIRD_WIDTH - 12;
+      const x = Math.min(desiredX, hRect.right + scrollX - BIRD_WIDTH - 8);
+      const y = hRect.bottom + scrollY - BIRD_HEIGHT + 6;
+      bird.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+      dockedRef.current = true;
+      bird.classList.remove('is-perched', 'is-flying');
+      bird.classList.add('is-docked');
+    };
+    startDocked();
+
+    const onBirdClick = (event: Event) => {
+      event.stopPropagation();
+      if (dockedRef.current) {
+        // Tocarlo en el header: aletea y queda listo para los botones.
+        window.clearTimeout(flapTimerRef.current);
+        bird.classList.add('is-flapping');
+        flapTimerRef.current = window.setTimeout(() => {
+          bird.classList.remove('is-flapping', 'is-docked');
+          dockedRef.current = false;
+        }, 1100);
+      } else {
+        dockToHeader();
+      }
+    };
+
+    const onBirdKey = (event: KeyboardEvent) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        onBirdClick(event);
+      }
+    };
+
     const onClick = (event: MouseEvent) => {
+      if (dockedRef.current) return;
       const target = event.target as HTMLElement | null;
       const button = target?.closest?.(BUTTON_SELECTOR);
       if (button instanceof HTMLElement) {
@@ -191,17 +270,28 @@ export const BirdCompanion: React.FC = () => {
       }
     };
 
+    bird.addEventListener('click', onBirdClick);
+    bird.addEventListener('keydown', onBirdKey);
     document.addEventListener('click', onClick, true);
 
     return () => {
+      bird.removeEventListener('click', onBirdClick);
+      bird.removeEventListener('keydown', onBirdKey);
       document.removeEventListener('click', onClick, true);
       clearIdle();
+      if (flapTimerRef.current) window.clearTimeout(flapTimerRef.current);
       animRef.current?.cancel();
     };
   }, []);
 
   return (
-    <div ref={birdRef} className="aly-bird" aria-hidden="true">
+    <div
+      ref={birdRef}
+      className="aly-bird"
+      role="button"
+      tabIndex={0}
+      aria-label="Pájaro compañero"
+    >
       <div ref={innerRef} className="aly-bird__inner">
         <div className="aly-bird__pose">
           <svg className="aly-bird__svg" viewBox="0 0 64 52" xmlns="http://www.w3.org/2000/svg">

@@ -765,8 +765,15 @@ body {
   top: 0;
   left: 0;
   z-index: 40;
-  pointer-events: none;
+  pointer-events: auto;
+  cursor: pointer;
+  outline: none;
+  touch-action: manipulation;
   will-change: transform;
+}
+
+.aly-bird:focus-visible .aly-bird__svg {
+  filter: drop-shadow(0 4px 6px rgba(11, 32, 39, 0.25)) drop-shadow(0 0 4px #00bed6);
 }
 
 .aly-bird__inner {
@@ -812,8 +819,8 @@ body {
   transform: translateY(-4px);
 }
 
-/* Bob en reposo */
-.aly-bird.is-perched:not(.is-busy) .aly-bird__body {
+/* Bob en reposo (no mientras esta en el header) */
+.aly-bird.is-perched:not(.is-busy):not(.is-docked) .aly-bird__body {
   animation: aly-bird-bob 1.8s ease-in-out infinite;
 }
 
