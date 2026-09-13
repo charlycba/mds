@@ -1,1 +1,607 @@
 @import "tailwindcss";
+
+@theme {
+  /* Paleta corporativa (relevada de innovative-portfolio.powerappsportals.com) */
+  --color-aly-amber: #e99b35;        /* Pantone 157 C */
+  --color-aly-cyan: #00bed6;         /* Pantone 3115 C */
+  --color-aly-orange: #ee7623;       /* Pantone 158 C */
+  --color-aly-teal: #008aab;         /* Pantone 3135 C */
+  --color-aly-orange-dark: #d15e14;  /* Pantone 159 C */
+  --color-aly-gray: #53575a;         /* Pantone 425 C */
+  --color-aly-teal-dark: #00758d;    /* Pantone 3145 C */
+
+  --font-sans: "Poppins", "Lato", ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  background-color: #f7f9fa;
+}
+
+/* ==========================================================================
+   Botones de Categorías Principales — efecto aurora + estrellas
+   Adaptado de Uiverse.io (by StealthWorm) a la paleta corporativa Aly.
+   ========================================================================== */
+.aly-cat-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  overflow: hidden;
+  cursor: pointer;
+  padding: 1rem;
+  border-radius: 0.85rem;
+  border: double 4px transparent;
+  background-image: linear-gradient(#0e2b32, #0e2b32),
+    linear-gradient(137.48deg, #00bed6 10%, #008aab 45%, #00758d 67%, #ee7623 87%);
+  background-size: 300% 300%;
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  backdrop-filter: blur(1rem);
+  transition: transform 0.5s, box-shadow 0.5s;
+  animation: aly-gradient-301 5s ease infinite;
+  text-align: left;
+}
+
+.aly-cat-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(0, 190, 214, 0.28);
+}
+
+.aly-cat-btn:active {
+  border-color: #00bed6;
+  animation: none;
+}
+
+.aly-cat-btn.is-selected {
+  transform: scale(1.02);
+  box-shadow: 0 0 0 2px rgba(0, 190, 214, 0.55), 0 10px 34px rgba(0, 190, 214, 0.3);
+}
+
+/* Contenido por encima de estrellas y glow */
+.aly-cat-btn__content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  width: 100%;
+  min-width: 0;
+}
+
+/* Capa de estrellas */
+.aly-cat-btn__stars {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.5s;
+  pointer-events: none;
+}
+
+.aly-cat-btn:hover .aly-cat-btn__stars,
+.aly-cat-btn.is-selected .aly-cat-btn__stars {
+  opacity: 0.85;
+}
+
+.aly-cat-btn__stars::before,
+.aly-cat-btn__stars::after {
+  content: '';
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background-image: radial-gradient(#ffffff 1px, transparent 1%);
+  background-size: 50px 50px;
+}
+
+.aly-cat-btn__stars::before {
+  top: 0;
+  left: -50%;
+  opacity: 0.5;
+  animation: aly-stars 60s linear infinite;
+}
+
+.aly-cat-btn__stars::after {
+  top: -10%;
+  left: -50%;
+  animation: aly-stars-rotate 90s linear infinite;
+}
+
+/* Aura / glow */
+.aly-cat-btn__glow {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.aly-cat-btn:hover .aly-cat-btn__glow {
+  opacity: 1;
+}
+
+.aly-cat-btn__circle {
+  width: 55%;
+  height: 30px;
+  border-radius: 9999px;
+  filter: blur(2rem);
+  animation: aly-pulse 4s infinite;
+}
+
+.aly-cat-btn__circle:nth-child(1) {
+  background: rgba(0, 190, 214, 0.6);
+}
+
+.aly-cat-btn__circle:nth-child(2) {
+  background: rgba(238, 118, 35, 0.55);
+}
+
+.aly-cat-btn:active .aly-cat-btn__circle {
+  background: #00bed6;
+}
+
+@keyframes aly-gradient-301 {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes aly-stars {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-135rem);
+  }
+}
+
+@keyframes aly-stars-rotate {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0);
+  }
+}
+
+@keyframes aly-pulse {
+  0% {
+    transform: scale(0.75);
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+  }
+  100% {
+    transform: scale(0.75);
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  }
+}
+
+/* ==========================================================================
+   Botones Secundarios (Subcategorías) — efecto galaxia / botón espacial
+   Adaptado de Uiverse.io (by elijahgummer) a la paleta corporativa Aly.
+   ========================================================================== */
+.aly-galaxy-btn {
+  --cut: 0.1em;
+  --active: 0;
+  --glow-rgb: 0 190 214;
+  --glow-rgb-2: 0 138 171;
+  --bg: radial-gradient(
+        120% 120% at 126% 126%,
+        rgb(var(--glow-rgb) / calc(var(--active) * 0.55)) 40%,
+        transparent 50%
+      )
+      calc(100px - (var(--active) * 100px)) 0 / 100% 100% no-repeat,
+    radial-gradient(
+        120% 120% at 120% 120%,
+        rgb(var(--glow-rgb-2) / calc(var(--active) * 0.9)) 30%,
+        transparent 70%
+      )
+      calc(100px - (var(--active) * 100px)) 0 / 100% 100% no-repeat,
+    #0e2b32;
+  background: var(--bg);
+  font-weight: 500;
+  border: 0;
+  cursor: pointer;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  border-radius: 0.75rem;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  transition:
+    box-shadow 0.25s ease-out,
+    scale 0.25s,
+    background 0.25s;
+  scale: calc(1 + (var(--active) * 0.04));
+  text-align: left;
+  box-shadow:
+    0 0 calc(var(--active) * 2em) calc(var(--active) * 1em)
+      rgb(var(--glow-rgb) / 0.3),
+    0 0.05em 0 0 rgb(255 255 255 / calc(var(--active) * 0.25)) inset,
+    0 -0.05em 0 0 rgb(0 0 0 / calc(var(--active) * 0.3)) inset;
+}
+
+.aly-galaxy-btn:is(:hover, :focus-visible),
+.aly-galaxy-btn.is-selected {
+  --active: 1;
+}
+
+.aly-galaxy-btn:active {
+  scale: 1;
+}
+
+/* Variante destacada (acento rojo corporativo) */
+.aly-galaxy-btn.is-destacada {
+  --glow-rgb: 244 63 94;
+  --glow-rgb-2: 190 18 60;
+}
+
+/* Capa interior para dar profundidad */
+.aly-galaxy-btn__backdrop {
+  position: absolute;
+  inset: var(--cut);
+  background: var(--bg);
+  border-radius: inherit;
+  transition: background 0.25s;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Campo de estrellas */
+.aly-galaxy-btn__galaxy {
+  position: absolute;
+  width: 100%;
+  aspect-ratio: 1;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  overflow: hidden;
+  opacity: var(--active);
+  transition: opacity 0.25s;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.aly-galaxy-btn__galaxy::before,
+.aly-galaxy-btn__galaxy::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  opacity: 1;
+  animation: aly-glowing-stars 1s linear alternate infinite;
+}
+
+.aly-galaxy-btn__galaxy::before {
+  box-shadow:
+    98px 14px #fff,
+    300px 20px #fff,
+    40px 90px #fff,
+    12px 100px #fff,
+    75px 55px #fff,
+    200px 60px #fff,
+    175px 250px #fff,
+    200px 160px #fff,
+    155px 135px #fff,
+    320px 70px #fff,
+    270px 55px #fff,
+    340px 35px #fff;
+  animation-delay: 0.4s;
+}
+
+.aly-galaxy-btn__galaxy::after {
+  top: -100px;
+  left: -45px;
+  box-shadow:
+    350px 235px #fff,
+    300px 210px #fff,
+    230px 195px #fff,
+    270px 245px #fff,
+    390px 120px #fff,
+    300px 125px #fff,
+    260px 105px #fff,
+    140px 175px #fff,
+    55px 15px #fff,
+    135px 35px #fff,
+    190px 14px #fff,
+    85px 160px #fff,
+    250px -1px #fff,
+    105px 255px #fff;
+  animation-delay: 0.8s;
+}
+
+/* Contenido / etiqueta */
+.aly-galaxy-btn__text {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-width: 0;
+  gap: 0.5rem;
+  color: #e6f7fa;
+}
+
+.aly-galaxy-btn__text::before,
+.aly-galaxy-btn__text::after {
+  content: '';
+  position: absolute;
+  top: -290%;
+  width: 5em;
+  height: 1px;
+  background: linear-gradient(90deg, #ffffff, transparent);
+  display: none;
+  z-index: -1;
+}
+
+.aly-galaxy-btn__text::before {
+  left: 90%;
+  rotate: -45deg;
+  animation: aly-shooting-star 4s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+.aly-galaxy-btn__text::after {
+  left: 10%;
+  rotate: -45deg;
+  animation: aly-shooting-star 7s ease-in-out infinite;
+  animation-delay: 3s;
+}
+
+.aly-galaxy-btn:is(:hover, :focus-visible) .aly-galaxy-btn__text::before,
+.aly-galaxy-btn:is(:hover, :focus-visible) .aly-galaxy-btn__text::after,
+.aly-galaxy-btn.is-selected .aly-galaxy-btn__text::before,
+.aly-galaxy-btn.is-selected .aly-galaxy-btn__text::after {
+  display: block;
+}
+
+/* Animación de wobble/blur al presionar */
+.aly-galaxy-btn:active .aly-galaxy-btn__text {
+  font-weight: 300;
+  animation:
+    aly-wobble 0.6s ease-in-out infinite,
+    aly-blur-move 1.5s ease-in-out infinite;
+}
+
+@keyframes aly-shooting-star {
+  0% {
+    transform: translateX(0) translateY(0);
+    opacity: 1;
+  }
+  50% {
+    transform: translateX(-55em) translateY(0);
+    opacity: 1;
+  }
+  70% {
+    transform: translateX(-70em) translateY(0);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0) translateY(0);
+    opacity: 0;
+  }
+}
+
+@keyframes aly-glowing-stars {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes aly-wobble {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(-2px, -10px);
+  }
+  50% {
+    transform: translate(2px, 3px);
+  }
+  75% {
+    transform: translate(-1px, 5px);
+  }
+}
+
+@keyframes aly-blur-move {
+  0%,
+  100% {
+    text-shadow:
+      5px 5px 20px rgba(255, 255, 255, 0.4),
+      10px 10px 30px rgba(0, 190, 214, 0.3);
+  }
+  50% {
+    filter: blur(1px);
+    text-shadow:
+      10px 10px 25px rgba(255, 255, 255, 0.4),
+      15px 15px 35px rgba(0, 190, 214, 0.3);
+  }
+}
+
+/* ==========================================================================
+   Logo "ALY" — efecto Generating (letras animadas + barrido de color)
+   Adaptado de Uiverse.io (by dexter-st) a la paleta corporativa Aly.
+   ========================================================================== */
+.aly-logo {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.75rem;
+  background: linear-gradient(135deg, #0e2b32 0%, #0b2027 100%);
+  box-shadow:
+    0 4px 12px rgba(0, 117, 141, 0.28),
+    0 0 0 1px rgba(0, 190, 214, 0.25) inset;
+  overflow: hidden;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800;
+  font-size: 0.8rem;
+  letter-spacing: 0.03em;
+  line-height: 1;
+  color: #fff;
+  user-select: none;
+}
+
+.aly-logo__base {
+  position: relative;
+  z-index: 2;
+  opacity: 0.22;
+}
+
+.aly-logo__letters {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.aly-logo__loader {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-color: transparent;
+  mask: repeating-linear-gradient(
+    90deg,
+    transparent 0,
+    transparent 6px,
+    black 7px,
+    black 8px
+  );
+  pointer-events: none;
+}
+
+.aly-logo__loader::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 50% 50%, #00bed6 0%, transparent 50%),
+    radial-gradient(circle at 45% 45%, #008aab 0%, transparent 45%),
+    radial-gradient(circle at 55% 55%, #e99b35 0%, transparent 45%),
+    radial-gradient(circle at 45% 55%, #ee7623 0%, transparent 45%),
+    radial-gradient(circle at 55% 45%, #00758d 0%, transparent 45%);
+  mask: radial-gradient(
+    circle at 50% 50%,
+    transparent 0%,
+    transparent 10%,
+    black 25%
+  );
+  animation:
+    aly-loader-transform 2s infinite alternate,
+    aly-loader-opacity 4s infinite;
+  animation-timing-function: cubic-bezier(0.6, 0.8, 0.5, 1);
+}
+
+.aly-loader-letter {
+  display: inline-block;
+  opacity: 0;
+  font-weight: 800;
+  animation: aly-loader-letter-anim 4s infinite linear;
+  z-index: 2;
+}
+
+.aly-loader-letter:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.aly-loader-letter:nth-child(2) {
+  animation-delay: 0.28s;
+}
+
+.aly-loader-letter:nth-child(3) {
+  animation-delay: 0.46s;
+}
+
+@keyframes aly-loader-transform {
+  0% {
+    transform: translate(-55%);
+  }
+  100% {
+    transform: translate(55%);
+  }
+}
+
+@keyframes aly-loader-opacity {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  65% {
+    opacity: 0;
+  }
+}
+
+@keyframes aly-loader-letter-anim {
+  0% {
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+    text-shadow: 0 0 4px #fff;
+    transform: scale(1.1) translateY(-2px);
+  }
+  20% {
+    opacity: 0.2;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aly-cat-btn,
+  .aly-cat-btn__stars::before,
+  .aly-cat-btn__stars::after,
+  .aly-cat-btn__circle,
+  .aly-galaxy-btn__galaxy::before,
+  .aly-galaxy-btn__galaxy::after,
+  .aly-galaxy-btn__text::before,
+  .aly-galaxy-btn__text::after,
+  .aly-galaxy-btn:active .aly-galaxy-btn__text,
+  .aly-logo__loader::after,
+  .aly-loader-letter {
+    animation: none;
+  }
+
+  .aly-logo__loader {
+    display: none;
+  }
+
+  .aly-loader-letter {
+    opacity: 1;
+  }
+}

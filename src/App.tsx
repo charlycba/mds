@@ -44,7 +44,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] text-slate-800 flex flex-col antialiased">
+    <div className="min-h-screen bg-[#f7f9fa] text-slate-800 flex flex-col antialiased">
       {/* Top Header with Global Search */}
       <Header
         categories={CATEGORIES_DATA}
@@ -62,13 +62,9 @@ export default function App() {
             <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
             <span className="text-slate-600 font-medium">{activeCategory.name}</span>
             <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-            <span className="text-blue-700 font-bold bg-blue-50 px-2 py-0.5 rounded-md border border-blue-100">
+            <span className="text-[#00758d] font-bold bg-[#e6f4f7] px-2 py-0.5 rounded-md border border-[#b9dfe6]">
               {activeSubcategory.name}
             </span>
-          </div>
-
-          <div className="flex items-center gap-2 text-[11px] text-slate-400">
-            <span>Diseño con tonos desaturados, calma y alta legibilidad</span>
           </div>
         </div>
 
@@ -106,20 +102,9 @@ export default function App() {
       </main>
 
       {/* Footer */}
-      <footer className="mt-16 bg-white border-t border-slate-200/80 py-6 text-xs text-slate-500">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-emerald-500" />
-            <span className="font-semibold text-slate-700">
-              Base de Conocimiento HelpDesk IT
-            </span>
-            <span className="text-slate-400">• Sistema de consulta y resolución</span>
-          </div>
-          <div className="flex items-center gap-6">
-            <span>4 Categorías principales</span>
-            <span>16 Temas estructurados</span>
-            <span className="text-slate-400">Formato: Síntomas • Causas • Guía • Prevención</span>
-          </div>
+      <footer className="mt-16 bg-[#00758d] py-6 text-xs text-white/80">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+          <span className="font-semibold text-white">Aly</span>
         </div>
       </footer>
     </div>

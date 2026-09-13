@@ -50,49 +50,52 @@ export const CategoryTabs: React.FC<CategoryTabsProps> = ({
               id={`cat-btn-${cat.id}`}
               type="button"
               onClick={() => onSelectCategory(cat.id)}
-              className={`relative flex items-center gap-3.5 p-4 rounded-xl text-left transition-all duration-200 border ${
-                isSelected
-                  ? 'bg-white border-slate-800 shadow-[0_4px_16px_rgba(15,23,42,0.08)] ring-1 ring-slate-800'
-                  : 'bg-white/70 border-slate-200/90 hover:bg-white hover:border-slate-300 hover:shadow-sm'
-              }`}
+              aria-pressed={isSelected}
+              className={`aly-cat-btn group ${isSelected ? 'is-selected' : ''}`}
             >
-              {/* Category Icon */}
-              <div
-                className={`p-2.5 rounded-lg transition-colors ${
-                  isSelected
-                    ? isSecurity
-                      ? 'bg-red-50 text-red-600'
-                      : 'bg-slate-900 text-white'
-                    : 'bg-slate-100 text-slate-600'
-                }`}
-              >
-                {getIcon(cat.iconName)}
-              </div>
+              {/* Capas decorativas: estrellas + aura */}
+              <span className="aly-cat-btn__stars" aria-hidden="true" />
+              <span className="aly-cat-btn__glow" aria-hidden="true">
+                <span className="aly-cat-btn__circle" />
+                <span className="aly-cat-btn__circle" />
+              </span>
 
-              {/* Text & Counter */}
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between gap-1">
-                  <h3
-                    className={`text-[15px] font-bold truncate ${
-                      isSelected ? 'text-slate-950' : 'text-slate-700'
-                    }`}
-                  >
-                    {cat.name}
-                  </h3>
-                  {cat.subcategories.some((s) => s.destacada) && (
-                    <span className="shrink-0 w-2 h-2 rounded-full bg-red-500 animate-ping" />
-                  )}
+              <div className="aly-cat-btn__content">
+                {/* Category Icon */}
+                <div
+                  className={`p-2.5 rounded-lg shrink-0 transition-colors ${
+                    isSelected
+                      ? isSecurity
+                        ? 'bg-red-500/20 text-red-300 ring-1 ring-red-400/50'
+                        : 'bg-gradient-to-br from-[#00bed6] to-[#00758d] text-white shadow-[0_0_18px_rgba(0,190,214,0.5)]'
+                      : isSecurity
+                      ? 'bg-red-500/10 text-red-300/90'
+                      : 'bg-white/10 text-[#7ad7e6] group-hover:bg-white/15'
+                  }`}
+                >
+                  {getIcon(cat.iconName)}
                 </div>
-                <p className="text-xs text-slate-500 truncate mt-0.5">
-                  {cat.subcategories.length}{' '}
-                  {cat.subcategories.length === 1 ? 'subcategoría' : 'subcategorías'}
-                </p>
-              </div>
 
-              {/* Active Indicator bar */}
-              {isSelected && (
-                <div className="absolute -bottom-px left-4 right-4 h-0.5 bg-slate-900 rounded-full" />
-              )}
+                {/* Text & Counter */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between gap-1">
+                    <h3
+                      className={`text-[15px] font-bold truncate ${
+                        isSelected ? 'text-white' : 'text-cyan-50/90'
+                      }`}
+                    >
+                      {cat.name}
+                    </h3>
+                    {cat.subcategories.some((s) => s.destacada) && (
+                      <span className="shrink-0 w-2 h-2 rounded-full bg-red-500 animate-ping" />
+                    )}
+                  </div>
+                  <p className="text-xs text-cyan-100/70 truncate mt-0.5">
+                    {cat.subcategories.length}{' '}
+                    {cat.subcategories.length === 1 ? 'subcategoría' : 'subcategorías'}
+                  </p>
+                </div>
+              </div>
             </button>
           );
         })}

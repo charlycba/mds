@@ -33,20 +33,26 @@ export const Header: React.FC<HeaderProps> = ({ categories, onSelectResult }) =>
 
   return (
     <header className="w-full bg-white border-b border-slate-200/80 sticky top-0 z-30 shadow-xs">
+      <div className="h-1 w-full bg-gradient-to-r from-[#00758d] via-[#00bed6] to-[#ee7623]" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col md:flex-row md:items-center justify-between gap-4">
         {/* Brand / Logo */}
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center font-black text-lg shadow-sm">
-            KB
+          <div className="aly-logo" role="img" aria-label="ALY">
+            <span className="aly-logo__base" aria-hidden="true">
+              ALY
+            </span>
+            <span className="aly-logo__letters" aria-hidden="true">
+              <span className="aly-loader-letter">A</span>
+              <span className="aly-loader-letter">L</span>
+              <span className="aly-loader-letter">Y</span>
+            </span>
+            <span className="aly-logo__loader" aria-hidden="true" />
           </div>
           <div>
             <div className="flex items-center gap-2">
               <h1 className="text-lg font-extrabold text-slate-900 tracking-tight leading-tight">
                 Centro de Soporte & Base de Conocimiento
               </h1>
-              <span className="hidden sm:inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200">
-                v2.4 Oficial
-              </span>
             </div>
             <p className="text-xs text-slate-500 hidden sm:block">
               Guías operativas, resolución de incidentes técnicos y protocolos de seguridad
@@ -68,7 +74,7 @@ export const Header: React.FC<HeaderProps> = ({ categories, onSelectResult }) =>
                 setSearchTerm(e.target.value);
                 setIsOpen(true);
               }}
-              className="w-full pl-9 pr-9 py-2 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:border-slate-800 focus:ring-1 focus:ring-slate-800 transition-all shadow-xs"
+              className="w-full pl-9 pr-9 py-2 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-xl text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:border-[#008aab] focus:ring-1 focus:ring-[#008aab] transition-all shadow-xs"
             />
             {searchTerm && (
               <button
@@ -106,7 +112,7 @@ export const Header: React.FC<HeaderProps> = ({ categories, onSelectResult }) =>
                     >
                       <div className="min-w-0 flex-1 pr-2">
                         <div className="flex items-center gap-1.5">
-                          <span className="text-xs font-bold text-slate-900 group-hover:text-blue-600 truncate">
+                          <span className="text-xs font-bold text-slate-900 group-hover:text-[#008aab] truncate">
                             {subcategory.name}
                           </span>
                           {subcategory.destacada && (
@@ -119,7 +125,7 @@ export const Header: React.FC<HeaderProps> = ({ categories, onSelectResult }) =>
                           {category.name} • <span className="text-slate-400">{matchReason}</span>
                         </p>
                       </div>
-                      <span className="text-xs text-slate-400 group-hover:text-blue-600 font-semibold shrink-0">
+                      <span className="text-xs text-slate-400 group-hover:text-[#008aab] font-semibold shrink-0">
                         Ver guía →
                       </span>
                     </button>

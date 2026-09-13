@@ -75,13 +75,13 @@ ${items.map((item) => `| **${item.campo}** | ${item.valor.replace(/\|/g, '-')} |
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-800">
         <div className="flex items-center gap-3">
-          <div className="p-2.5 bg-blue-500/20 text-blue-400 rounded-xl border border-blue-500/30">
+          <div className="p-2.5 bg-[#00bed6]/15 text-[#00bed6] rounded-xl border border-[#00bed6]/30">
             <FileText className="w-5 h-5" />
           </div>
           <div>
             <h3 className="text-lg font-bold text-white flex items-center gap-2">
               Plantilla Oficial de Comunicación de Escalamiento
-              <span className="text-xs font-semibold px-2.5 py-0.5 bg-blue-500/30 text-blue-300 rounded-full border border-blue-400/30 flex items-center gap-1">
+              <span className="text-xs font-semibold px-2.5 py-0.5 bg-[#00bed6]/20 text-[#8ee6f3] rounded-full border border-[#00bed6]/30 flex items-center gap-1">
                 <Sparkles className="w-3 h-3" /> Formato de 11 Campos
               </span>
             </h3>
@@ -109,7 +109,7 @@ ${items.map((item) => `| **${item.campo}** | ${item.valor.replace(/\|/g, '-')} |
             className={`px-3.5 py-2 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5 shadow-lg ${
               copiedFormat === 'text'
                 ? 'bg-emerald-500 text-white shadow-emerald-500/20'
-                : 'bg-blue-600 hover:bg-blue-500 text-white shadow-blue-600/30 active:scale-[0.98]'
+                : 'bg-[#008aab] hover:bg-[#00758d] text-white shadow-[#008aab]/30 active:scale-[0.98]'
             }`}
           >
             {copiedFormat === 'text' ? (
@@ -158,7 +158,7 @@ ${items.map((item) => `| **${item.campo}** | ${item.valor.replace(/\|/g, '-')} |
             type="text"
             value={ticketId}
             onChange={(e) => setTicketId(e.target.value)}
-            className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-slate-200 font-mono text-sm focus:outline-none focus:border-blue-500"
+            className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-slate-200 font-mono text-sm focus:outline-none focus:border-[#00bed6]"
           />
         </div>
 
@@ -167,7 +167,7 @@ ${items.map((item) => `| **${item.campo}** | ${item.valor.replace(/\|/g, '-')} |
           <select
             value={severidad}
             onChange={(e) => setSeveridad(e.target.value)}
-            className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-slate-200 text-sm focus:outline-none focus:border-blue-500"
+            className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-slate-200 text-sm focus:outline-none focus:border-[#00bed6]"
           >
             <option value="Sev1: Usuario ve datos de otro usuario (Crítico)">Sev1: Usuario ve datos de otro usuario (Crítico)</option>
             <option value="Sev2 (Alto impacto - Trabajo bloqueado)">Sev2 (Alto impacto - Trabajo bloqueado)</option>
@@ -198,7 +198,7 @@ ${items.map((item) => `| **${item.campo}** | ${item.valor.replace(/\|/g, '-')} |
                     type="text"
                     value={item.valor}
                     onChange={(e) => handleFieldChange(item.id, e.target.value)}
-                    className="w-full bg-slate-800/90 border border-slate-700/80 rounded-lg px-3 py-1.5 text-slate-200 focus:outline-none focus:border-blue-500 text-xs transition-colors"
+                    className="w-full bg-slate-800/90 border border-slate-700/80 rounded-lg px-3 py-1.5 text-slate-200 focus:outline-none focus:border-[#00bed6] text-xs transition-colors"
                     placeholder={item.descripcion}
                   />
                 </td>
