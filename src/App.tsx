@@ -6,6 +6,7 @@ import { SubcategoryTabs } from './components/SubcategoryTabs';
 import { KnowledgeCardsGrid } from './components/KnowledgeCardsGrid';
 import { EscalationTemplateWidget } from './components/EscalationTemplateWidget';
 import { VantaBackground } from './components/VantaBackground';
+import { BirdCompanion } from './components/BirdCompanion';
 import { HelpCircle, ChevronRight, Layers, ExternalLink } from 'lucide-react';
 
 export default function App() {
@@ -48,6 +49,9 @@ export default function App() {
     <>
       {/* Fondo animado Vanta.js (paleta Aly) */}
       <VantaBackground />
+
+      {/* Pajaro companero que vuela al boton presionado */}
+      <BirdCompanion />
 
       <div className="relative z-10 min-h-screen text-slate-800 flex flex-col antialiased">
         {/* Top Header with Global Search */}

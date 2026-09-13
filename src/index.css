@@ -756,3 +756,87 @@ body {
     animation: none;
   }
 }
+
+/* ==========================================================================
+   Pajaro companero (BirdCompanion) — vuela al boton presionado
+   ========================================================================== */
+.aly-bird {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 40;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.aly-bird__inner {
+  transition: transform 0.15s ease;
+  transform-origin: center;
+}
+
+.aly-bird__svg {
+  display: block;
+  width: 56px;
+  height: auto;
+  filter: drop-shadow(0 4px 6px rgba(11, 32, 39, 0.25));
+}
+
+.aly-bird__wing {
+  transform-box: fill-box;
+  transform-origin: 100% 50%;
+}
+
+.aly-bird:not(.is-flying) .aly-bird__wing--near {
+  transform: rotate(7deg);
+}
+
+.aly-bird:not(.is-flying) .aly-bird__wing--far {
+  transform: rotate(-5deg);
+}
+
+.aly-bird:not(.is-flying) .aly-bird__body {
+  animation: aly-bird-bob 1.8s ease-in-out infinite;
+}
+
+.aly-bird.is-flying .aly-bird__wing--near {
+  animation: aly-bird-flap-near 0.25s ease-in-out infinite alternate;
+}
+
+.aly-bird.is-flying .aly-bird__wing--far {
+  animation: aly-bird-flap-far 0.25s ease-in-out infinite alternate;
+}
+
+@keyframes aly-bird-flap-near {
+  from {
+    transform: rotate(-34deg);
+  }
+  to {
+    transform: rotate(30deg);
+  }
+}
+
+@keyframes aly-bird-flap-far {
+  from {
+    transform: rotate(28deg);
+  }
+  to {
+    transform: rotate(-26deg);
+  }
+}
+
+@keyframes aly-bird-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aly-bird__body,
+  .aly-bird__wing {
+    animation: none;
+  }
+}
