@@ -710,3 +710,49 @@ body {
     box-shadow: 0 0 120px 15px rgba(0, 190, 214, 0.35);
   }
 }
+
+/* ==========================================================================
+   BorderBeam — haz de luz que recorre el borde de las cards
+   Adaptado de MagicUI (BorderBeam) sin dependencia de `motion`.
+   ========================================================================== */
+@property --aly-beam-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.aly-border-beam {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: var(--beam-width, 1.5px);
+  pointer-events: none;
+  background: conic-gradient(
+    from var(--aly-beam-angle),
+    transparent 0%,
+    transparent 72%,
+    var(--beam-color-from, #ee7623) 84%,
+    var(--beam-color-to, #f6a35e) 94%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(#000 0 0), linear-gradient(#000 0 0);
+  -webkit-mask-clip: content-box, border-box;
+  -webkit-mask-composite: xor;
+  mask-image: linear-gradient(#000 0 0), linear-gradient(#000 0 0);
+  mask-clip: content-box, border-box;
+  mask-composite: exclude;
+  animation: aly-border-beam-spin var(--beam-duration, 6s) linear infinite;
+  animation-delay: var(--beam-delay, 0s);
+}
+
+@keyframes aly-border-beam-spin {
+  to {
+    --aly-beam-angle: 360deg;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aly-border-beam {
+    animation: none;
+  }
+}

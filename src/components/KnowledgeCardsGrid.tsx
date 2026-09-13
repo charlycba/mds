@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Subcategory } from '../types';
 import { Copy, Check, ShieldAlert, Clock, ArrowRight, Layers, UserCheck, AlertTriangle } from 'lucide-react';
 import { ScrambleText } from './ScrambleText';
+import { BorderBeam } from './BorderBeam';
 
 interface KnowledgeCardsGridProps {
   subcategory: Subcategory;
@@ -189,6 +190,8 @@ ${data.casosEspeciales.map((item) => `• ${item}`).join('\n')}
               </li>
             ))}
           </ul>
+          <BorderBeam duration={6} borderWidth={1.5} colorFrom="#ee7623" colorTo="#f6a35e" />
+          <BorderBeam duration={6} delay={3} borderWidth={1} colorFrom="#f6a35e" colorTo="#ee7623" />
         </div>
 
         {/* Card 2: 💡 Causas Probables (Ámbar Aly) */}
@@ -214,6 +217,8 @@ ${data.casosEspeciales.map((item) => `• ${item}`).join('\n')}
               </li>
             ))}
           </ul>
+          <BorderBeam duration={6} borderWidth={1.5} colorFrom="#e99b35" colorTo="#f3c078" />
+          <BorderBeam duration={6} delay={3} borderWidth={1} colorFrom="#f3c078" colorTo="#e99b35" />
         </div>
 
         {/* Card 3: 🧭 Solución Paso a Paso / Pasos de Resolución (Cyan Aly) */}
@@ -242,6 +247,8 @@ ${data.casosEspeciales.map((item) => `• ${item}`).join('\n')}
               );
             })}
           </ol>
+          <BorderBeam duration={6} borderWidth={1.5} colorFrom="#00bed6" colorTo="#7fe3ef" />
+          <BorderBeam duration={6} delay={3} borderWidth={1} colorFrom="#7fe3ef" colorTo="#00bed6" />
         </div>
 
         {/* Card 4: ✅ Consejos de Prevención / Verificación Exitosa (Teal Aly) */}
@@ -267,6 +274,8 @@ ${data.casosEspeciales.map((item) => `• ${item}`).join('\n')}
               </li>
             ))}
           </ul>
+          <BorderBeam duration={6} borderWidth={1.5} colorFrom="#008aab" colorTo="#59c0d6" />
+          <BorderBeam duration={6} delay={3} borderWidth={1} colorFrom="#59c0d6" colorTo="#008aab" />
         </div>
 
         {/* 5th Block (Naranja oscuro Aly): 🚨 SI ESTO NO FUNCIONA / CASOS ESPECIALES */}
@@ -296,6 +305,8 @@ ${data.casosEspeciales.map((item) => `• ${item}`).join('\n')}
                 </li>
               ))}
             </ul>
+            <BorderBeam duration={6} borderWidth={1.5} colorFrom="#d15e14" colorTo="#ee7623" />
+            <BorderBeam duration={6} delay={3} borderWidth={1} colorFrom="#ee7623" colorTo="#d15e14" />
           </div>
         )}
       </div>
