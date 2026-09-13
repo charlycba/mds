@@ -13,6 +13,7 @@ export const Header: React.FC<HeaderProps> = ({ categories, onSelectResult }) =>
   const [searchTerm, setSearchTerm] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLElement>(null);
 
   // Indexed search (Fuse.js). The index is built once per categories reference.
   const runSearch = useMemo(() => createKnowledgeSearch(categories), [categories]);
@@ -32,9 +33,38 @@ export const Header: React.FC<HeaderProps> = ({ categories, onSelectResult }) =>
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // El header no queda fijo: se desvanece a medida que se hace scroll hacia abajo.
+  useEffect(() => {
+    const el = headerRef.current;
+    if (!el) return;
+
+    const FADE_DISTANCE = 160;
+    let frame = 0;
+
+    const update = () => {
+      const progress = Math.min(1, window.scrollY / FADE_DISTANCE);
+      el.style.opacity = String(1 - progress);
+      el.style.transform = `translateY(${-progress * 16}px)`;
+      el.style.pointerEvents = progress > 0.95 ? 'none' : 'auto';
+    };
+
+    const onScroll = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      cancelAnimationFrame(frame);
+    };
+  }, []);
+
   return (
     <header
-      className="w-full border-b border-slate-200/80 sticky top-0 z-30 shadow-xs bg-slate-100"
+      ref={headerRef}
+      className="w-full border-b border-slate-200/80 z-30 shadow-xs bg-slate-100 will-change-[opacity,transform]"
       style={{
         backgroundImage: `linear-gradient(90deg, rgba(255,255,255,0.94) 0%, rgba(255,255,255,0.78) 42%, rgba(255,255,255,0.28) 100%), url(${headerBg})`,
         backgroundSize: 'cover',
