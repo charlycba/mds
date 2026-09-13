@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Subcategory } from '../types';
 import { Copy, Check, ShieldAlert, Clock, ArrowRight, Layers, UserCheck, AlertTriangle } from 'lucide-react';
+import { ScrambleText } from './ScrambleText';
 
 interface KnowledgeCardsGridProps {
   subcategory: Subcategory;
@@ -175,7 +176,7 @@ ${data.casosEspeciales.map((item) => `• ${item}`).join('\n')}
               ⚠️
             </span>
             <h3 className="text-[17px] font-bold text-[#8c1c34] tracking-tight">
-              {data.tituloSintomas || 'Síntomas Comunes'}
+              <ScrambleText text={data.tituloSintomas || 'Síntomas Comunes'} />
             </h3>
           </div>
           <ul className="space-y-2.5 text-[15px] text-slate-700 leading-relaxed pl-1">
@@ -184,7 +185,7 @@ ${data.casosEspeciales.map((item) => `• ${item}`).join('\n')}
                 <span className="text-[#8c1c34] text-lg leading-none select-none font-bold">
                   •
                 </span>
-                <span className="flex-1">{sintoma}</span>
+                <ScrambleText text={sintoma} className="flex-1" delay={idx * 45} />
               </li>
             ))}
           </ul>
@@ -200,7 +201,7 @@ ${data.casosEspeciales.map((item) => `• ${item}`).join('\n')}
               💡
             </span>
             <h3 className="text-[17px] font-bold text-[#92400e] tracking-tight">
-              {data.tituloCausas || 'Causas Probables'}
+              <ScrambleText text={data.tituloCausas || 'Causas Probables'} />
             </h3>
           </div>
           <ul className="space-y-2.5 text-[15px] text-slate-700 leading-relaxed pl-1">
@@ -209,7 +210,7 @@ ${data.casosEspeciales.map((item) => `• ${item}`).join('\n')}
                 <span className="text-[#b45309] text-lg leading-none select-none font-bold">
                   •
                 </span>
-                <span className="flex-1">{causa}</span>
+                <ScrambleText text={causa} className="flex-1" delay={idx * 45} />
               </li>
             ))}
           </ul>
@@ -225,7 +226,7 @@ ${data.casosEspeciales.map((item) => `• ${item}`).join('\n')}
               🧭
             </span>
             <h3 className="text-[17px] font-bold text-[#1e40af] tracking-tight">
-              {data.tituloPasos || 'Solución Paso a Paso'}
+              <ScrambleText text={data.tituloPasos || 'Solución Paso a Paso'} />
             </h3>
           </div>
           <ol className="space-y-2.5 text-[15px] text-slate-700 leading-relaxed">
@@ -236,7 +237,7 @@ ${data.casosEspeciales.map((item) => `• ${item}`).join('\n')}
                   <span className="font-bold text-[#1e40af] shrink-0 min-w-[20px] text-right">
                     {idx + 1}.
                   </span>
-                  <span className="flex-1">{cleanText}</span>
+                  <ScrambleText text={cleanText} className="flex-1" delay={idx * 45} />
                 </li>
               );
             })}
@@ -253,7 +254,7 @@ ${data.casosEspeciales.map((item) => `• ${item}`).join('\n')}
               ✅
             </span>
             <h3 className="text-[17px] font-bold text-[#166534] tracking-tight">
-              {data.tituloPrevencion || 'Consejos de Prevención'}
+              <ScrambleText text={data.tituloPrevencion || 'Consejos de Prevención'} />
             </h3>
           </div>
           <ul className="space-y-2.5 text-[15px] text-slate-700 leading-relaxed pl-1">
@@ -262,7 +263,7 @@ ${data.casosEspeciales.map((item) => `• ${item}`).join('\n')}
                 <span className="text-[#059669] text-lg leading-none select-none font-bold">
                   •
                 </span>
-                <span className="flex-1">{item}</span>
+                <ScrambleText text={item} className="flex-1" delay={idx * 45} />
               </li>
             ))}
           </ul>
@@ -279,7 +280,7 @@ ${data.casosEspeciales.map((item) => `• ${item}`).join('\n')}
                 🚨
               </span>
               <h3 className="text-[17px] font-bold text-[#8c1c34] tracking-tight">
-                {data.tituloCasosEspeciales || 'Si Esto No Funciona / Casos Especiales'}
+                <ScrambleText text={data.tituloCasosEspeciales || 'Si Esto No Funciona / Casos Especiales'} />
               </h3>
               <span className="text-[11px] font-bold px-2 py-0.5 rounded bg-red-100 text-red-800 uppercase tracking-wider ml-auto">
                 Casos Especiales
@@ -291,7 +292,7 @@ ${data.casosEspeciales.map((item) => `• ${item}`).join('\n')}
                   <span className="text-[#8c1c34] text-lg leading-none select-none font-bold">
                     •
                   </span>
-                  <span className="flex-1 font-medium">{caso}</span>
+                  <ScrambleText text={caso} className="flex-1 font-medium" delay={idx * 45} />
                 </li>
               ))}
             </ul>
