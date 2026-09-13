@@ -16,11 +16,8 @@ export const SubcategoryTabs: React.FC<SubcategoryTabsProps> = ({
   categoryName,
 }) => {
   return (
-    <div
-      id="subcategories-navigation"
-      className="w-full bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-sm"
-    >
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 mb-3 border-b border-slate-100">
+    <div id="subcategories-navigation" className="w-full p-4 sm:p-5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 mb-3 border-b border-slate-200/50">
         <div className="flex items-center gap-2">
           <span className="inline-block w-2 h-2 rounded-full bg-[#00bed6]" />
           <h3 className="text-sm font-bold text-slate-900 tracking-tight">
