@@ -50,10 +50,10 @@ export default function App() {
       {/* Fondo animado Vanta.js (paleta Aly) */}
       <VantaBackground />
 
-      {/* Pajaro companero que vuela al boton presionado */}
-      <BirdCompanion />
-
       <div className="relative z-10 min-h-screen text-slate-800 flex flex-col antialiased">
+        {/* Pajaro companero que vuela al boton presionado */}
+        <BirdCompanion />
+
         {/* Top Header with Global Search */}
         <Header
           categories={CATEGORIES_DATA}

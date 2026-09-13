@@ -3,11 +3,16 @@ import React, { useEffect, useRef } from 'react';
 const BIRD_WIDTH = 56;
 const BIRD_HEIGHT = 46;
 
+const BUTTON_SELECTOR =
+  '#categories-navigation .aly-cat-btn, #subcategories-navigation .aly-galaxy-btn';
+
 /**
  * Pajaro companero que vuela al boton presionado (categorias y subcategorias)
  * y se posa sobre su borde superior hasta que se presiona otro.
  *
- * Inspirado en la mecanica de oneko.js, pero con un pajaro SVG en la paleta Aly.
+ * - Posicionamiento absoluto en el documento: acompana el scroll y se mantiene
+ *   sobre el boton seleccionado.
+ * - Vuelo con trayectoria y duracion aleatorias (nada predecible) y aterrizaje suave.
  */
 export const BirdCompanion: React.FC = () => {
   const birdRef = useRef<HTMLDivElement>(null);
@@ -20,20 +25,23 @@ export const BirdCompanion: React.FC = () => {
     if (!bird || !inner) return;
 
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const startX = 24;
-    const startY = Math.max(24, window.innerHeight - BIRD_HEIGHT - 24);
-    bird.style.transform = `translate3d(${startX}px, ${startY}px, 0)`;
+    const initialX = 24;
+    const initialY = window.scrollY + window.innerHeight - BIRD_HEIGHT - 24;
+    bird.style.transform = `translate3d(${initialX}px, ${initialY}px, 0)`;
 
     const flyTo = (el: HTMLElement) => {
+      const scrollX = window.scrollX;
+      const scrollY = window.scrollY;
       const rect = el.getBoundingClientRect();
       const birdRect = bird.getBoundingClientRect();
-      const start = { x: birdRect.left, y: birdRect.top };
-      const targetX = rect.left + rect.width / 2 - BIRD_WIDTH / 2;
-      const targetY = rect.top - BIRD_HEIGHT + 6;
 
-      inner.style.transform = targetX < start.x ? 'scaleX(-1)' : 'scaleX(1)';
+      const start = { x: birdRect.left + scrollX, y: birdRect.top + scrollY };
+      const target = {
+        x: rect.left + scrollX + rect.width / 2 - BIRD_WIDTH / 2,
+        y: rect.top + scrollY - BIRD_HEIGHT + 6,
+      };
 
-      const target = { x: targetX, y: targetY };
+      inner.style.transform = target.x < start.x ? 'scaleX(-1)' : 'scaleX(1)';
 
       if (reduceMotion) {
         bird.style.transform = `translate3d(${target.x}px, ${target.y}px, 0)`;
@@ -42,24 +50,46 @@ export const BirdCompanion: React.FC = () => {
 
       const dx = target.x - start.x;
       const dy = target.y - start.y;
-      const dist = Math.hypot(dx, dy);
-      const duration = Math.min(1600, Math.max(600, dist * 1.1));
-      const midX = start.x + dx / 2;
-      const midY = Math.min(start.y, target.y) - Math.max(60, Math.abs(dx) * 0.16);
+      const dist = Math.hypot(dx, dy) || 1;
+
+      // Duracion lenta y aleatoria, con algo de dependencia de la distancia.
+      const duration = 1800 + Math.random() * 1500 + Math.min(1200, dist * 0.6);
+
+      // Amplitud del zigzagueo aleatorio, proporcional a la distancia.
+      const amplitude = Math.max(16, Math.min(95, dist * (0.08 + Math.random() * 0.1)));
+
+      // Base perpendicular a la recta origen->destino para desviar el vuelo.
+      const perpX = -dy / dist;
+      const perpY = dx / dist;
+
+      const segments = 5;
+      const keyframes: Keyframe[] = [];
+      for (let i = 0; i <= segments; i++) {
+        const t = i / segments;
+        const env = Math.sin(Math.PI * t); // 0 en los extremos, 1 en el centro
+        const off = (Math.random() * 2 - 1) * amplitude * env;
+        const wobble = (Math.random() * 2 - 1) * amplitude * 0.5 * env;
+        const rot = (Math.random() * 2 - 1) * 9 * env;
+        keyframes.push({
+          offset: t,
+          transform: `translate3d(${start.x + dx * t + perpX * off}px, ${
+            start.y + dy * t + perpY * off + wobble
+          }px, 0) rotate(${rot}deg)`,
+        });
+      }
+      keyframes[0].transform = `translate3d(${start.x}px, ${start.y}px, 0)`;
+      keyframes[segments].transform = `translate3d(${target.x}px, ${target.y}px, 0)`;
 
       // Fijar la posicion actual como base y cancelar el vuelo anterior.
       bird.style.transform = `translate3d(${start.x}px, ${start.y}px, 0)`;
       animRef.current?.cancel();
       bird.classList.add('is-flying');
 
-      const anim = bird.animate(
-        [
-          { transform: `translate3d(${start.x}px, ${start.y}px, 0)` },
-          { transform: `translate3d(${midX}px, ${midY}px, 0)`, offset: 0.5 },
-          { transform: `translate3d(${target.x}px, ${target.y}px, 0)` },
-        ],
-        { duration, easing: 'ease-in-out', fill: 'forwards' },
-      );
+      const anim = bird.animate(keyframes, {
+        duration,
+        easing: 'ease-in-out',
+        fill: 'forwards',
+      });
 
       anim.onfinish = () => {
         bird.classList.remove('is-flying');
@@ -70,7 +100,7 @@ export const BirdCompanion: React.FC = () => {
 
     const onClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement | null;
-      const button = target?.closest?.('.aly-cat-btn, .aly-galaxy-btn');
+      const button = target?.closest?.(BUTTON_SELECTOR);
       if (button instanceof HTMLElement) {
         flyTo(button);
       }

@@ -761,7 +761,7 @@ body {
    Pajaro companero (BirdCompanion) — vuela al boton presionado
    ========================================================================== */
 .aly-bird {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   z-index: 40;
