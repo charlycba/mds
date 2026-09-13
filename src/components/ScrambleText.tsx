@@ -31,7 +31,7 @@ export const ScrambleText: React.FC<ScrambleTextProps> = ({
 
     el.textContent = text;
     const animation = animate(el, {
-      innerHTML: scrambleText({ chars: 'a-zA-Z0-9', cursor: true, perturbation: 0.6 }),
+      innerHTML: scrambleText({ text, chars: 'a-zA-Z0-9', cursor: true, perturbation: 0.6 }),
       duration,
       delay,
     });

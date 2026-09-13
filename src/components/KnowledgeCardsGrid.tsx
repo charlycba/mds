@@ -109,7 +109,8 @@ export const KnowledgeCardsGrid: React.FC<KnowledgeCardsGridProps> = ({
       )}
 
       {/* Cards Grid: 4 cards normally, or 5 cards when special cases exist */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+      {/* La key fuerza el remontaje al cambiar de tema para re-disparar el scrambleText */}
+      <div key={subcategory.id} className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {/* Card 1: ⚠️ Síntomas Comunes (Naranja Aly) */}
         <div
           id="card-sintomas-comunes"
@@ -235,7 +236,7 @@ export const KnowledgeCardsGrid: React.FC<KnowledgeCardsGridProps> = ({
                 <ScrambleText text={data.tituloCasosEspeciales || 'Si Esto No Funciona / Casos Especiales'} />
               </h3>
               <span className="text-[11px] font-bold px-2 py-0.5 rounded bg-[#fbe1cf] text-[#8c3a0c] uppercase tracking-wider ml-auto">
-                Casos Especiales
+                <ScrambleText text="Casos Especiales" />
               </span>
             </div>
             <ul className="space-y-2 text-[15px] text-slate-700 leading-relaxed pl-1">
