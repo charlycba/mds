@@ -107,8 +107,15 @@ export default function App() {
       </main>
 
       {/* Footer */}
-      <footer className="mt-16 bg-[#00758d] py-6 text-xs text-white/80">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+      <footer className="aly-footer mt-16 py-8 text-xs text-white/80">
+        <div className="aly-footer__lightings" aria-hidden="true">
+          <span className="aly-footer__light aly-footer__light--1" />
+          <span className="aly-footer__light aly-footer__light--2" />
+          <span className="aly-footer__light aly-footer__light--3" />
+          <span className="aly-footer__light aly-footer__light--4" />
+          <span className="aly-footer__light aly-footer__light--5" />
+        </div>
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center">
           <span className="font-semibold text-white">Aly</span>
         </div>
       </footer>

@@ -605,3 +605,108 @@ body {
     opacity: 1;
   }
 }
+
+/* ==========================================================================
+   Footer — iluminación animada (glow inferior)
+   Adaptado a la paleta corporativa Aly.
+   ========================================================================== */
+.aly-footer {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0e2b32 0%, #0b2027 100%);
+}
+
+.aly-footer__lightings {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -60px;
+  height: 20px;
+  pointer-events: none;
+}
+
+.aly-footer__light {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  height: 20px;
+  border-radius: 50%;
+  transform: translateX(-50%);
+}
+
+.aly-footer__light--1 {
+  width: 100%;
+  animation: aly-light-one 5s ease-in-out infinite alternate;
+}
+
+.aly-footer__light--2 {
+  width: 90%;
+  animation: aly-light-two 4s ease-in-out infinite alternate;
+}
+
+.aly-footer__light--3 {
+  width: 80%;
+  animation: aly-light-three 3s ease-in-out infinite alternate;
+}
+
+.aly-footer__light--4 {
+  width: 70%;
+  animation: aly-light-four 2s ease-in-out infinite alternate;
+}
+
+.aly-footer__light--5 {
+  width: 60%;
+  animation: aly-light-five 1s ease-in-out infinite alternate;
+}
+
+@keyframes aly-light-one {
+  from {
+    box-shadow: 0 0 250px 20px #00758d;
+  }
+  to {
+    box-shadow: 0 0 100px 15px #00bed6;
+  }
+}
+
+@keyframes aly-light-two {
+  from {
+    box-shadow: 0 0 250px 20px #008aab;
+  }
+  to {
+    box-shadow: 0 0 100px 15px #e99b35;
+  }
+}
+
+@keyframes aly-light-three {
+  from {
+    box-shadow: 0 0 250px 20px #ee7623;
+  }
+  to {
+    box-shadow: 0 0 100px 15px #00bed6;
+  }
+}
+
+@keyframes aly-light-four {
+  from {
+    box-shadow: 0 0 250px 20px #d15e14;
+  }
+  to {
+    box-shadow: 0 0 100px 15px #e99b35;
+  }
+}
+
+@keyframes aly-light-five {
+  from {
+    box-shadow: 0 0 250px 20px #00bed6;
+  }
+  to {
+    box-shadow: 0 0 100px 15px #ee7623;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aly-footer__light {
+    animation: none;
+    box-shadow: 0 0 120px 15px rgba(0, 190, 214, 0.35);
+  }
+}
