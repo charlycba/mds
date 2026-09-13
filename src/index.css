@@ -774,6 +774,11 @@ body {
   transform-origin: center;
 }
 
+.aly-bird__pose {
+  transform-origin: 50% 90%;
+  transition: transform 0.3s ease;
+}
+
 .aly-bird__svg {
   display: block;
   width: 56px;
@@ -784,26 +789,68 @@ body {
 .aly-bird__wing {
   transform-box: fill-box;
   transform-origin: 100% 50%;
+  transition: transform 0.35s ease;
 }
 
-.aly-bird:not(.is-flying) .aly-bird__wing--near {
+/* Alas junto al cuerpo (como el estado original) */
+.aly-bird__wing--near {
   transform: rotate(7deg);
 }
 
-.aly-bird:not(.is-flying) .aly-bird__wing--far {
+.aly-bird__wing--far {
   transform: rotate(-5deg);
 }
 
-.aly-bird:not(.is-flying) .aly-bird__body {
+/* Patitas: se guardan al volar y al sentarse */
+.aly-bird__feet {
+  opacity: 1;
+}
+
+.aly-bird.is-flying .aly-bird__feet,
+.aly-bird.is-sitting .aly-bird__feet {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+
+/* Bob en reposo */
+.aly-bird.is-perched:not(.is-busy) .aly-bird__body {
   animation: aly-bird-bob 1.8s ease-in-out infinite;
 }
 
-.aly-bird.is-flying .aly-bird__wing--near {
+/* Aleteo (vuelo y comportamiento) */
+.aly-bird.is-flying .aly-bird__wing--near,
+.aly-bird.is-flapping .aly-bird__wing--near,
+.aly-bird.is-jumping .aly-bird__wing--near {
   animation: aly-bird-flap-near 0.25s ease-in-out infinite alternate;
 }
 
-.aly-bird.is-flying .aly-bird__wing--far {
+.aly-bird.is-flying .aly-bird__wing--far,
+.aly-bird.is-flapping .aly-bird__wing--far,
+.aly-bird.is-jumping .aly-bird__wing--far {
   animation: aly-bird-flap-far 0.25s ease-in-out infinite alternate;
+}
+
+/* Sentarse */
+.aly-bird.is-sitting .aly-bird__pose {
+  transform: translateY(7px) rotate(-3deg);
+}
+
+/* Saltar */
+.aly-bird.is-jumping .aly-bird__pose {
+  animation: aly-bird-jump 0.65s ease-in-out;
+}
+
+/* Caminar por el borde: patitas alternadas */
+.aly-bird.is-walking .aly-bird__pose {
+  animation: aly-bird-waddle 0.34s ease-in-out infinite alternate;
+}
+
+.aly-bird.is-walking .aly-bird__leg--left {
+  animation: aly-bird-step-left 0.34s ease-in-out infinite;
+}
+
+.aly-bird.is-walking .aly-bird__leg--right {
+  animation: aly-bird-step-right 0.34s ease-in-out infinite;
 }
 
 @keyframes aly-bird-flap-near {
@@ -834,9 +881,54 @@ body {
   }
 }
 
+@keyframes aly-bird-jump {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-24px);
+  }
+  65% {
+    transform: translateY(-19px);
+  }
+}
+
+@keyframes aly-bird-waddle {
+  from {
+    transform: rotate(-3deg);
+  }
+  to {
+    transform: rotate(3deg);
+  }
+}
+
+@keyframes aly-bird-step-left {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(1.6px, -2px);
+  }
+}
+
+@keyframes aly-bird-step-right {
+  0%,
+  100% {
+    transform: translate(0, -2px);
+  }
+  50% {
+    transform: translate(-1.6px, 0);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .aly-bird__body,
-  .aly-bird__wing {
+  .aly-bird__wing,
+  .aly-bird__pose,
+  .aly-bird__feet,
+  .aly-bird__leg {
     animation: none;
   }
 }
