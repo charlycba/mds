@@ -90,27 +90,28 @@ export const KnowledgeCardsGrid: React.FC<KnowledgeCardsGridProps> = ({
             <div>
               <div className="flex items-center gap-2 flex-wrap">
                 <h3 className="text-sm sm:text-base font-extrabold text-red-950 uppercase tracking-wide">
-                  Protocolo Crítico de Seguridad — Incidente Severidad 1
+                  <ScrambleText text="Protocolo Crítico de Seguridad — Incidente Severidad 1" trigger={subcategory.id} />
                 </h3>
                 <span className="text-[11px] bg-red-700 text-white font-extrabold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
-                  Prioridad Inmediata
+                  <ScrambleText text="Prioridad Inmediata" trigger={subcategory.id} />
                 </span>
               </div>
               <p className="text-xs sm:text-sm text-red-900 mt-1 max-w-2xl font-medium">
-                Cualquier usuario que reporte ver datos ajenos requiere atención prioritaria. NO modificar datos, NO cerrar sesión del usuario por cuenta propia y avisar de inmediato por el canal oficial de Sev1.
+                <ScrambleText text="Cualquier usuario que reporte ver datos ajenos requiere atención prioritaria. NO modificar datos, NO cerrar sesión del usuario por cuenta propia y avisar de inmediato por el canal oficial de Sev1." trigger={subcategory.id} />
               </p>
             </div>
           </div>
           <div className="flex items-center gap-3 text-xs font-bold text-red-950 bg-white/90 px-3.5 py-2.5 rounded-xl border border-red-200 shrink-0 shadow-xs">
             <Clock className="w-4 h-4 text-red-600" />
-            <span>Tiempo Estimado: 5 min</span>
+            <span>
+              <ScrambleText text="Tiempo Estimado: 5 min" trigger={subcategory.id} />
+            </span>
           </div>
         </div>
       )}
 
       {/* Cards Grid: 4 cards normally, or 5 cards when special cases exist */}
-      {/* La key fuerza el remontaje al cambiar de tema para re-disparar el scrambleText */}
-      <div key={subcategory.id} className="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
         {/* Card 1: ⚠️ Síntomas Comunes (Naranja Aly) */}
         <div
           id="card-sintomas-comunes"
@@ -121,7 +122,7 @@ export const KnowledgeCardsGrid: React.FC<KnowledgeCardsGridProps> = ({
               ⚠️
             </span>
             <h3 className="text-[17px] font-bold text-[#9a400f] tracking-tight">
-              <ScrambleText text={data.tituloSintomas || 'Síntomas Comunes'} />
+              <ScrambleText text={data.tituloSintomas || 'Síntomas Comunes'} trigger={subcategory.id} />
             </h3>
           </div>
           <ul className="space-y-2.5 text-[15px] text-slate-700 leading-relaxed pl-1">
@@ -130,7 +131,7 @@ export const KnowledgeCardsGrid: React.FC<KnowledgeCardsGridProps> = ({
                 <span className="text-[#d15e14] text-lg leading-none select-none font-bold">
                   •
                 </span>
-                <ScrambleText text={sintoma} className="flex-1" delay={idx * 45} />
+                <ScrambleText text={sintoma} className="flex-1" delay={idx * 45} trigger={subcategory.id} />
               </li>
             ))}
           </ul>
@@ -148,7 +149,7 @@ export const KnowledgeCardsGrid: React.FC<KnowledgeCardsGridProps> = ({
               💡
             </span>
             <h3 className="text-[17px] font-bold text-[#8a5a12] tracking-tight">
-              <ScrambleText text={data.tituloCausas || 'Causas Probables'} />
+              <ScrambleText text={data.tituloCausas || 'Causas Probables'} trigger={subcategory.id} />
             </h3>
           </div>
           <ul className="space-y-2.5 text-[15px] text-slate-700 leading-relaxed pl-1">
@@ -157,7 +158,7 @@ export const KnowledgeCardsGrid: React.FC<KnowledgeCardsGridProps> = ({
                 <span className="text-[#c07d1f] text-lg leading-none select-none font-bold">
                   •
                 </span>
-                <ScrambleText text={causa} className="flex-1" delay={idx * 45} />
+                <ScrambleText text={causa} className="flex-1" delay={idx * 45} trigger={subcategory.id} />
               </li>
             ))}
           </ul>
@@ -175,7 +176,7 @@ export const KnowledgeCardsGrid: React.FC<KnowledgeCardsGridProps> = ({
               🧭
             </span>
             <h3 className="text-[17px] font-bold text-[#006b80] tracking-tight">
-              <ScrambleText text={data.tituloPasos || 'Solución Paso a Paso'} />
+              <ScrambleText text={data.tituloPasos || 'Solución Paso a Paso'} trigger={subcategory.id} />
             </h3>
           </div>
           <ol className="space-y-2.5 text-[15px] text-slate-700 leading-relaxed">
@@ -186,7 +187,7 @@ export const KnowledgeCardsGrid: React.FC<KnowledgeCardsGridProps> = ({
                   <span className="font-bold text-[#00758d] shrink-0 min-w-[20px] text-right">
                     {idx + 1}.
                   </span>
-                  <ScrambleText text={cleanText} className="flex-1" delay={idx * 45} />
+                  <ScrambleText text={cleanText} className="flex-1" delay={idx * 45} trigger={subcategory.id} />
                 </li>
               );
             })}
@@ -205,7 +206,7 @@ export const KnowledgeCardsGrid: React.FC<KnowledgeCardsGridProps> = ({
               ✅
             </span>
             <h3 className="text-[17px] font-bold text-[#00596b] tracking-tight">
-              <ScrambleText text={data.tituloPrevencion || 'Consejos de Prevención'} />
+              <ScrambleText text={data.tituloPrevencion || 'Consejos de Prevención'} trigger={subcategory.id} />
             </h3>
           </div>
           <ul className="space-y-2.5 text-[15px] text-slate-700 leading-relaxed pl-1">
@@ -214,7 +215,7 @@ export const KnowledgeCardsGrid: React.FC<KnowledgeCardsGridProps> = ({
                 <span className="text-[#00758d] text-lg leading-none select-none font-bold">
                   •
                 </span>
-                <ScrambleText text={item} className="flex-1" delay={idx * 45} />
+                <ScrambleText text={item} className="flex-1" delay={idx * 45} trigger={subcategory.id} />
               </li>
             ))}
           </ul>
@@ -233,10 +234,10 @@ export const KnowledgeCardsGrid: React.FC<KnowledgeCardsGridProps> = ({
                 🚨
               </span>
               <h3 className="text-[17px] font-bold text-[#8c3a0c] tracking-tight">
-                <ScrambleText text={data.tituloCasosEspeciales || 'Si Esto No Funciona / Casos Especiales'} />
+                <ScrambleText text={data.tituloCasosEspeciales || 'Si Esto No Funciona / Casos Especiales'} trigger={subcategory.id} />
               </h3>
               <span className="text-[11px] font-bold px-2 py-0.5 rounded bg-[#fbe1cf] text-[#8c3a0c] uppercase tracking-wider ml-auto">
-                <ScrambleText text="Casos Especiales" />
+                <ScrambleText text="Casos Especiales" trigger={subcategory.id} />
               </span>
             </div>
             <ul className="space-y-2 text-[15px] text-slate-700 leading-relaxed pl-1">
@@ -245,7 +246,7 @@ export const KnowledgeCardsGrid: React.FC<KnowledgeCardsGridProps> = ({
                   <span className="text-[#b34a12] text-lg leading-none select-none font-bold">
                     •
                   </span>
-                  <ScrambleText text={caso} className="flex-1 font-medium" delay={idx * 45} />
+                  <ScrambleText text={caso} className="flex-1 font-medium" delay={idx * 45} trigger={subcategory.id} />
                 </li>
               ))}
             </ul>
