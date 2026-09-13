@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { Search, X } from 'lucide-react';
 import { Category } from '../types';
 import { createKnowledgeSearch } from '../lib/searchIndex';
+import headerBg from './header.jpg';
 
 interface HeaderProps {
   categories: Category[];
@@ -32,9 +33,17 @@ export const Header: React.FC<HeaderProps> = ({ categories, onSelectResult }) =>
   }, []);
 
   return (
-    <header className="w-full bg-white border-b border-slate-200/80 sticky top-0 z-30 shadow-xs">
+    <header
+      className="w-full border-b border-slate-200/80 sticky top-0 z-30 shadow-xs bg-slate-100"
+      style={{
+        backgroundImage: `linear-gradient(90deg, rgba(255,255,255,0.94) 0%, rgba(255,255,255,0.78) 42%, rgba(255,255,255,0.28) 100%), url(${headerBg})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center 35%',
+        backgroundRepeat: 'no-repeat',
+      }}
+    >
       <div className="h-1 w-full bg-gradient-to-r from-[#00758d] via-[#00bed6] to-[#ee7623]" />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
         {/* Brand / Logo */}
         <div className="flex items-center gap-3">
           <div className="aly-logo" role="img" aria-label="ALY">

@@ -5,6 +5,7 @@ import { CategoryTabs } from './components/CategoryTabs';
 import { SubcategoryTabs } from './components/SubcategoryTabs';
 import { KnowledgeCardsGrid } from './components/KnowledgeCardsGrid';
 import { EscalationTemplateWidget } from './components/EscalationTemplateWidget';
+import { VantaBackground } from './components/VantaBackground';
 import { HelpCircle, ChevronRight, Layers, ExternalLink } from 'lucide-react';
 
 export default function App() {
@@ -44,12 +45,16 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f7f9fa] text-slate-800 flex flex-col antialiased">
-      {/* Top Header with Global Search */}
-      <Header
-        categories={CATEGORIES_DATA}
-        onSelectResult={handleSelectSearchResult}
-      />
+    <>
+      {/* Fondo animado Vanta.js (paleta Aly) */}
+      <VantaBackground />
+
+      <div className="relative z-10 min-h-screen text-slate-800 flex flex-col antialiased">
+        {/* Top Header with Global Search */}
+        <Header
+          categories={CATEGORIES_DATA}
+          onSelectResult={handleSelectSearchResult}
+        />
 
       {/* Main Content Area */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
@@ -107,6 +112,7 @@ export default function App() {
           <span className="font-semibold text-white">Aly</span>
         </div>
       </footer>
-    </div>
+      </div>
+    </>
   );
 }
