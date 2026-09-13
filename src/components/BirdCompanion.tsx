@@ -29,6 +29,8 @@ export const BirdCompanion: React.FC = () => {
   const flapTimerRef = useRef<number | undefined>(undefined);
   const currentButtonRef = useRef<HTMLElement | null>(null);
   const dockedRef = useRef(false);
+  const positionModeRef = useRef<'free' | 'header' | 'button'>('free');
+  const perchRatioRef = useRef(0.5);
 
   useEffect(() => {
     const bird = birdRef.current;
@@ -49,6 +51,37 @@ export const BirdCompanion: React.FC = () => {
 
     const faceTowards = (fromX: number, toX: number) => {
       inner.style.transform = toX < fromX ? 'scaleX(-1)' : 'scaleX(1)';
+    };
+
+    // Posicion destino sobre el header (a la derecha del buscador, abajo).
+    const headerTarget = () => {
+      const header = document.querySelector('header');
+      if (!header) return null;
+      const hRect = header.getBoundingClientRect();
+      const search = document.getElementById('input-global-search');
+      const { scrollX, scrollY } = docCoords();
+      const desiredX = search
+        ? search.getBoundingClientRect().right + scrollX + 12
+        : hRect.right + scrollX - BIRD_WIDTH - 12;
+      return {
+        x: Math.min(desiredX, hRect.right + scrollX - BIRD_WIDTH - 8),
+        y: hRect.bottom + scrollY - BIRD_HEIGHT + 6,
+      };
+    };
+
+    // Reajusta la posicion tras un zoom/resize sin animar (queda donde estaba).
+    const reposition = () => {
+      if (bird.classList.contains('is-flying') || bird.classList.contains('is-busy')) return;
+      if (positionModeRef.current === 'header') {
+        const target = headerTarget();
+        if (target) bird.style.transform = `translate3d(${target.x}px, ${target.y}px, 0)`;
+      } else if (positionModeRef.current === 'button' && currentButtonRef.current) {
+        const { scrollX, scrollY } = docCoords();
+        const rect = currentButtonRef.current.getBoundingClientRect();
+        const x = rect.left + scrollX + perchRatioRef.current * rect.width - BIRD_WIDTH / 2;
+        const y = rect.top + scrollY - BIRD_HEIGHT + 6;
+        bird.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+      }
     };
 
     const clearBehaviorClasses = () => {
@@ -114,6 +147,14 @@ export const BirdCompanion: React.FC = () => {
       );
       anim.onfinish = () => {
         bird.style.transform = `translate3d(${target.x}px, ${target.y}px, 0)`;
+        anim.cancel();
+        // Guardar la posicion relativa dentro del boton para conservarla al zoom.
+        const r = el.getBoundingClientRect();
+        const { scrollX } = docCoords();
+        perchRatioRef.current = Math.min(
+          1,
+          Math.max(0, (target.x + BIRD_WIDTH / 2 - (r.left + scrollX)) / r.width),
+        );
         clearBehaviorClasses();
         scheduleNextBehavior();
       };
@@ -165,6 +206,7 @@ export const BirdCompanion: React.FC = () => {
       anim.onfinish = () => {
         bird.classList.remove('is-flying');
         bird.style.transform = `translate3d(${target.x}px, ${target.y}px, 0)`;
+        anim.cancel();
         onArrive();
       };
       animRef.current = anim;
@@ -174,6 +216,8 @@ export const BirdCompanion: React.FC = () => {
       clearIdle();
       currentButtonRef.current = el;
       dockedRef.current = false;
+      positionModeRef.current = 'button';
+      perchRatioRef.current = 0.5;
       bird.classList.remove('is-perched', 'is-docked');
 
       const { scrollX, scrollY } = docCoords();
@@ -195,24 +239,11 @@ export const BirdCompanion: React.FC = () => {
       clearIdle();
       currentButtonRef.current = null;
       dockedRef.current = true;
+      positionModeRef.current = 'header';
       bird.classList.remove('is-perched', 'is-docked');
 
       const start = currentPosition();
-      const { scrollX, scrollY } = docCoords();
-      const header = document.querySelector('header');
-
-      let target = { ...start };
-      if (header) {
-        const hRect = header.getBoundingClientRect();
-        const search = document.getElementById('input-global-search');
-        const desiredX = search
-          ? search.getBoundingClientRect().right + scrollX + 12
-          : hRect.right + scrollX - BIRD_WIDTH - 12;
-        target = {
-          x: Math.min(desiredX, hRect.right + scrollX - BIRD_WIDTH - 8),
-          y: hRect.bottom + scrollY - BIRD_HEIGHT + 6,
-        };
-      }
+      const target = headerTarget() ?? start;
       faceTowards(start.x, target.x);
 
       animateFlight(start, target, () => {
@@ -222,18 +253,11 @@ export const BirdCompanion: React.FC = () => {
 
     // Al cargar la pagina el pajaro arranca desactivado, posado en el header.
     const startDocked = () => {
-      const header = document.querySelector('header');
-      if (!header) return;
-      const hRect = header.getBoundingClientRect();
-      const search = document.getElementById('input-global-search');
-      const { scrollX, scrollY } = docCoords();
-      const desiredX = search
-        ? search.getBoundingClientRect().right + scrollX + 12
-        : hRect.right + scrollX - BIRD_WIDTH - 12;
-      const x = Math.min(desiredX, hRect.right + scrollX - BIRD_WIDTH - 8);
-      const y = hRect.bottom + scrollY - BIRD_HEIGHT + 6;
-      bird.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+      const target = headerTarget();
+      if (!target) return;
+      bird.style.transform = `translate3d(${target.x}px, ${target.y}px, 0)`;
       dockedRef.current = true;
+      positionModeRef.current = 'header';
       bird.classList.remove('is-perched', 'is-flying');
       bird.classList.add('is-docked');
     };
@@ -273,11 +297,15 @@ export const BirdCompanion: React.FC = () => {
     bird.addEventListener('click', onBirdClick);
     bird.addEventListener('keydown', onBirdKey);
     document.addEventListener('click', onClick, true);
+    window.addEventListener('resize', reposition);
+    window.visualViewport?.addEventListener('resize', reposition);
 
     return () => {
       bird.removeEventListener('click', onBirdClick);
       bird.removeEventListener('keydown', onBirdKey);
       document.removeEventListener('click', onClick, true);
+      window.removeEventListener('resize', reposition);
+      window.visualViewport?.removeEventListener('resize', reposition);
       clearIdle();
       if (flapTimerRef.current) window.clearTimeout(flapTimerRef.current);
       animRef.current?.cancel();

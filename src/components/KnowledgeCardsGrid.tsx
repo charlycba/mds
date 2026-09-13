@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Subcategory } from '../types';
-import { Copy, Check, ShieldAlert, Clock, ArrowRight, Layers, UserCheck, AlertTriangle } from 'lucide-react';
+import { ShieldAlert, Clock, ArrowRight, Layers, UserCheck } from 'lucide-react';
 import { ScrambleText } from './ScrambleText';
 import { BorderBeam } from './BorderBeam';
 
@@ -13,40 +13,9 @@ export const KnowledgeCardsGrid: React.FC<KnowledgeCardsGridProps> = ({
   subcategory,
   categoryName,
 }) => {
-  const [copiedAll, setCopiedAll] = useState(false);
   const { data } = subcategory;
 
   const hasSpecialCases = Boolean(data.casosEspeciales && data.casosEspeciales.length > 0);
-
-  const handleCopyAll = () => {
-    let formattedText = `=====================================================
-CATEGORÍA: ${categoryName.toUpperCase()}
-SUB-TEMA: ${subcategory.name.toUpperCase()}
-${data.tiempoEstimado ? `TIEMPO ESTIMADO: ${data.tiempoEstimado}\n` : ''}${data.aplicaA ? `APLICA A: ${data.aplicaA}\n` : ''}${data.uso ? `USO: ${data.uso}\n` : ''}=====================================================
-
-⚠️ ${(data.tituloSintomas || 'SÍNTOMAS COMUNES').toUpperCase()}:
-${data.sintomas.map((s) => `• ${s}`).join('\n')}
-
-💡 ${(data.tituloCausas || 'CAUSAS PROBABLES').toUpperCase()}:
-${data.causas.map((c) => `• ${c}`).join('\n')}
-
-🧭 ${(data.tituloPasos || 'SOLUCIÓN PASO A PASO').toUpperCase()}:
-${data.pasos.join('\n')}
-
-✅ ${(data.tituloPrevencion || 'CONSEJOS DE PREVENCIÓN').toUpperCase()}:
-${data.prevencion.map((p) => `• ${p}`).join('\n')}
-`;
-
-    if (hasSpecialCases && data.casosEspeciales) {
-      formattedText += `\n🚨 ${(data.tituloCasosEspeciales || 'SI ESTO NO FUNCIONA / CASOS ESPECIALES').toUpperCase()}:
-${data.casosEspeciales.map((item) => `• ${item}`).join('\n')}
-`;
-    }
-
-    navigator.clipboard.writeText(formattedText);
-    setCopiedAll(true);
-    setTimeout(() => setCopiedAll(false), 2200);
-  };
 
   return (
     <div className="w-full space-y-6" id={`content-section-${subcategory.id}`}>
@@ -105,32 +74,6 @@ ${data.casosEspeciales.map((item) => `• ${item}`).join('\n')}
               )}
             </div>
           )}
-        </div>
-
-        {/* Action button */}
-        <div className="flex items-center gap-2 self-start lg:self-center shrink-0">
-          <button
-            type="button"
-            id="btn-copy-guide"
-            onClick={handleCopyAll}
-            className={`inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg transition-all shadow-sm border ${
-              copiedAll
-                ? 'bg-emerald-50 text-emerald-700 border-emerald-300 ring-2 ring-emerald-200'
-                : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-50 hover:border-slate-400 active:scale-[0.98]'
-            }`}
-          >
-            {copiedAll ? (
-              <>
-                <Check className="w-3.5 h-3.5 text-emerald-600" />
-                <span>¡Guía copiada con éxito!</span>
-              </>
-            ) : (
-              <>
-                <Copy className="w-3.5 h-3.5 text-slate-500" />
-                <span>Copiar información completa</span>
-              </>
-            )}
-          </button>
         </div>
       </div>
 
