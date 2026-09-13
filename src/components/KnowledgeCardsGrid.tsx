@@ -166,23 +166,23 @@ ${data.casosEspeciales.map((item) => `• ${item}`).join('\n')}
 
       {/* Cards Grid: 4 cards normally, or 5 cards when special cases exist */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        {/* Card 1: ⚠️ Síntomas Comunes (Red/Rose) */}
+        {/* Card 1: ⚠️ Síntomas Comunes (Naranja Aly) */}
         <div
           id="card-sintomas-comunes"
-          className="relative bg-[#faf4f4] border border-[#edd7d7] rounded-xl border-l-[6px] border-l-[#c03952] p-5 shadow-[0_2px_8px_rgba(0,0,0,0.03)] transition-all hover:shadow-md"
+          className="relative bg-[#fdf4ed] border border-[#f6ddc8] rounded-xl border-l-[6px] border-l-[#ee7623] p-5 shadow-[0_2px_8px_rgba(0,0,0,0.03)] transition-all hover:shadow-md"
         >
           <div className="flex items-center gap-2.5 mb-3.5">
             <span className="text-lg leading-none" role="img" aria-label="Alerta">
               ⚠️
             </span>
-            <h3 className="text-[17px] font-bold text-[#8c1c34] tracking-tight">
+            <h3 className="text-[17px] font-bold text-[#9a400f] tracking-tight">
               <ScrambleText text={data.tituloSintomas || 'Síntomas Comunes'} />
             </h3>
           </div>
           <ul className="space-y-2.5 text-[15px] text-slate-700 leading-relaxed pl-1">
             {data.sintomas.map((sintoma, idx) => (
               <li key={idx} className="flex items-start gap-2.5">
-                <span className="text-[#8c1c34] text-lg leading-none select-none font-bold">
+                <span className="text-[#d15e14] text-lg leading-none select-none font-bold">
                   •
                 </span>
                 <ScrambleText text={sintoma} className="flex-1" delay={idx * 45} />
@@ -191,23 +191,23 @@ ${data.casosEspeciales.map((item) => `• ${item}`).join('\n')}
           </ul>
         </div>
 
-        {/* Card 2: 💡 Causas Probables (Amber/Yellow) */}
+        {/* Card 2: 💡 Causas Probables (Ámbar Aly) */}
         <div
           id="card-causas-probables"
-          className="relative bg-[#fcfaf1] border border-[#f0e7c6] rounded-xl border-l-[6px] border-l-[#d97706] p-5 shadow-[0_2px_8px_rgba(0,0,0,0.03)] transition-all hover:shadow-md"
+          className="relative bg-[#fdf8ee] border border-[#f5e4c8] rounded-xl border-l-[6px] border-l-[#e99b35] p-5 shadow-[0_2px_8px_rgba(0,0,0,0.03)] transition-all hover:shadow-md"
         >
           <div className="flex items-center gap-2.5 mb-3.5">
             <span className="text-lg leading-none" role="img" aria-label="Bombilla">
               💡
             </span>
-            <h3 className="text-[17px] font-bold text-[#92400e] tracking-tight">
+            <h3 className="text-[17px] font-bold text-[#8a5a12] tracking-tight">
               <ScrambleText text={data.tituloCausas || 'Causas Probables'} />
             </h3>
           </div>
           <ul className="space-y-2.5 text-[15px] text-slate-700 leading-relaxed pl-1">
             {data.causas.map((causa, idx) => (
               <li key={idx} className="flex items-start gap-2.5">
-                <span className="text-[#b45309] text-lg leading-none select-none font-bold">
+                <span className="text-[#c07d1f] text-lg leading-none select-none font-bold">
                   •
                 </span>
                 <ScrambleText text={causa} className="flex-1" delay={idx * 45} />
@@ -216,16 +216,16 @@ ${data.casosEspeciales.map((item) => `• ${item}`).join('\n')}
           </ul>
         </div>
 
-        {/* Card 3: 🧭 Solución Paso a Paso / Pasos de Resolución (Blue) */}
+        {/* Card 3: 🧭 Solución Paso a Paso / Pasos de Resolución (Cyan Aly) */}
         <div
           id="card-guia-paso-a-paso"
-          className="relative bg-[#f3f7fb] border border-[#d2e2f2] rounded-xl border-l-[6px] border-l-[#2563eb] p-5 shadow-[0_2px_8px_rgba(0,0,0,0.03)] transition-all hover:shadow-md"
+          className="relative bg-[#eef9fb] border border-[#cbeaf1] rounded-xl border-l-[6px] border-l-[#00bed6] p-5 shadow-[0_2px_8px_rgba(0,0,0,0.03)] transition-all hover:shadow-md"
         >
           <div className="flex items-center gap-2.5 mb-3.5">
             <span className="text-lg leading-none" role="img" aria-label="Brújula">
               🧭
             </span>
-            <h3 className="text-[17px] font-bold text-[#1e40af] tracking-tight">
+            <h3 className="text-[17px] font-bold text-[#006b80] tracking-tight">
               <ScrambleText text={data.tituloPasos || 'Solución Paso a Paso'} />
             </h3>
           </div>
@@ -234,7 +234,7 @@ ${data.casosEspeciales.map((item) => `• ${item}`).join('\n')}
               const cleanText = paso.replace(/^\d+\.\s*/, '');
               return (
                 <li key={idx} className="flex items-start gap-2.5">
-                  <span className="font-bold text-[#1e40af] shrink-0 min-w-[20px] text-right">
+                  <span className="font-bold text-[#00758d] shrink-0 min-w-[20px] text-right">
                     {idx + 1}.
                   </span>
                   <ScrambleText text={cleanText} className="flex-1" delay={idx * 45} />
@@ -244,23 +244,23 @@ ${data.casosEspeciales.map((item) => `• ${item}`).join('\n')}
           </ol>
         </div>
 
-        {/* Card 4: ✅ Consejos de Prevención / Verificación Exitosa (Green) */}
+        {/* Card 4: ✅ Consejos de Prevención / Verificación Exitosa (Teal Aly) */}
         <div
           id="card-consejos-prevencion"
-          className="relative bg-[#f2f8f4] border border-[#cbe5d4] rounded-xl border-l-[6px] border-l-[#10b981] p-5 shadow-[0_2px_8px_rgba(0,0,0,0.03)] transition-all hover:shadow-md"
+          className="relative bg-[#eef7f9] border border-[#cbe4ea] rounded-xl border-l-[6px] border-l-[#008aab] p-5 shadow-[0_2px_8px_rgba(0,0,0,0.03)] transition-all hover:shadow-md"
         >
           <div className="flex items-center gap-2.5 mb-3.5">
             <span className="text-lg leading-none" role="img" aria-label="Check">
               ✅
             </span>
-            <h3 className="text-[17px] font-bold text-[#166534] tracking-tight">
+            <h3 className="text-[17px] font-bold text-[#00596b] tracking-tight">
               <ScrambleText text={data.tituloPrevencion || 'Consejos de Prevención'} />
             </h3>
           </div>
           <ul className="space-y-2.5 text-[15px] text-slate-700 leading-relaxed pl-1">
             {data.prevencion.map((item, idx) => (
               <li key={idx} className="flex items-start gap-2.5">
-                <span className="text-[#059669] text-lg leading-none select-none font-bold">
+                <span className="text-[#00758d] text-lg leading-none select-none font-bold">
                   •
                 </span>
                 <ScrambleText text={item} className="flex-1" delay={idx * 45} />
@@ -269,27 +269,27 @@ ${data.casosEspeciales.map((item) => `• ${item}`).join('\n')}
           </ul>
         </div>
 
-        {/* 5th Block (Red): 🚨 SI ESTO NO FUNCIONA / CASOS ESPECIALES */}
+        {/* 5th Block (Naranja oscuro Aly): 🚨 SI ESTO NO FUNCIONA / CASOS ESPECIALES */}
         {hasSpecialCases && data.casosEspeciales && (
           <div
             id="card-casos-especiales-5to-bloque"
-            className="md:col-span-2 relative bg-[#faf4f4] border border-[#edd7d7] rounded-xl border-l-[6px] border-l-[#c03952] p-5 shadow-[0_2px_8px_rgba(0,0,0,0.03)] transition-all hover:shadow-md"
+            className="md:col-span-2 relative bg-[#fcf3ec] border border-[#f4ddcb] rounded-xl border-l-[6px] border-l-[#d15e14] p-5 shadow-[0_2px_8px_rgba(0,0,0,0.03)] transition-all hover:shadow-md"
           >
             <div className="flex items-center gap-2.5 mb-3.5">
               <span className="text-lg leading-none" role="img" aria-label="Alerta roja">
                 🚨
               </span>
-              <h3 className="text-[17px] font-bold text-[#8c1c34] tracking-tight">
+              <h3 className="text-[17px] font-bold text-[#8c3a0c] tracking-tight">
                 <ScrambleText text={data.tituloCasosEspeciales || 'Si Esto No Funciona / Casos Especiales'} />
               </h3>
-              <span className="text-[11px] font-bold px-2 py-0.5 rounded bg-red-100 text-red-800 uppercase tracking-wider ml-auto">
+              <span className="text-[11px] font-bold px-2 py-0.5 rounded bg-[#fbe1cf] text-[#8c3a0c] uppercase tracking-wider ml-auto">
                 Casos Especiales
               </span>
             </div>
             <ul className="space-y-2 text-[15px] text-slate-700 leading-relaxed pl-1">
               {data.casosEspeciales.map((caso, idx) => (
                 <li key={idx} className="flex items-start gap-2.5">
-                  <span className="text-[#8c1c34] text-lg leading-none select-none font-bold">
+                  <span className="text-[#b34a12] text-lg leading-none select-none font-bold">
                     •
                   </span>
                   <ScrambleText text={caso} className="flex-1 font-medium" delay={idx * 45} />
