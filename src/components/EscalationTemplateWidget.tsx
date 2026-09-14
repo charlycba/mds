@@ -35,10 +35,31 @@ export const EscalationTemplateWidget: React.FC = () => {
   };
 
   const getPlainText = () => {
-    return `ESCALAMIENTO — [#${ticketId}] — [${severidad}]
-======================================================================
-${items.map((item) => `${item.campo.padEnd(24, ' ')}: ${item.valor}`).join('\n')}
-======================================================================`;
+    const line = '='.repeat(62);
+    const divider = '-'.repeat(62);
+    const fecha = new Date().toLocaleString('es-AR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+
+    const detalle = items
+      .map((item) => `${item.campo}:\n  ${item.valor.trim() || '(sin completar)'}`)
+      .join('\n\n');
+
+    return `${line}
+ESCALAMIENTO A TIER 2
+${line}
+Ticket:      #${ticketId.trim() || '(sin ticket)'}
+Severidad:   ${severidad}
+Fecha:       ${fecha}
+${divider}
+DETALLE DEL CASO
+${divider}
+
+${detalle}`;
   };
 
   const handleCopyText = () => {
@@ -153,17 +174,6 @@ ${items.map((item) => `${item.campo.padEnd(24, ' ')}: ${item.valor}`).join('\n')
             ))}
           </tbody>
         </table>
-      </div>
-
-      {/* Live Preview Box */}
-      <div className="relative mt-4">
-        <div className="text-[11px] font-mono text-slate-400 bg-slate-950 px-4 py-2 rounded-t-lg border-t border-x border-slate-800 flex items-center justify-between">
-          <span>VISTA PREVIA DEL ESCALAMIENTO</span>
-          <span className="text-slate-500">Listo para pegar en Jira / ServiceNow / Slack</span>
-        </div>
-        <pre className="p-4 bg-slate-950/90 text-slate-300 font-mono text-xs rounded-b-lg border border-slate-800 overflow-x-auto whitespace-pre leading-relaxed max-h-56 scrollbar-thin">
-          {getPlainText()}
-        </pre>
       </div>
     </div>
   );
