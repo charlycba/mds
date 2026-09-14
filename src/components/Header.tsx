@@ -106,7 +106,7 @@ export const Header: React.FC<HeaderProps> = ({ categories, onSelectResult }) =>
             <input
               type="text"
               id="input-global-search"
-              placeholder="Buscar síntoma, error 404, 500, Sev1, contraseña..."
+              placeholder="Buscar síntoma, error 404, 500, etc ..."
               value={searchTerm}
               onFocus={() => setIsOpen(true)}
               onChange={(e) => {

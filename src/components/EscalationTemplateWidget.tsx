@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Copy, Check, FileText, Sparkles, RefreshCw, Table } from 'lucide-react';
+import { Copy, Check, FileText, Sparkles } from 'lucide-react';
 
 interface EscalationItem {
   id: string;
@@ -26,7 +26,7 @@ export const EscalationTemplateWidget: React.FC = () => {
   const [ticketId, setTicketId] = useState('INC-94821');
   const [severidad, setSeveridad] = useState('Sev2 (Alto impacto - Trabajo bloqueado)');
   const [items, setItems] = useState<EscalationItem[]>(DEFAULT_ITEMS);
-  const [copiedFormat, setCopiedFormat] = useState<'text' | 'table' | null>(null);
+  const [copiedFormat, setCopiedFormat] = useState<'text' | null>(null);
 
   const handleFieldChange = (id: string, newVal: string) => {
     setItems((prev) =>
@@ -41,30 +41,10 @@ ${items.map((item) => `${item.campo.padEnd(24, ' ')}: ${item.valor}`).join('\n')
 ======================================================================`;
   };
 
-  const getMarkdownTable = () => {
-    return `ESCALAMIENTO — [#${ticketId}] — [${severidad}]
-
-| Campo | Detalle |
-| :--- | :--- |
-${items.map((item) => `| **${item.campo}** | ${item.valor.replace(/\|/g, '-')} |`).join('\n')}`;
-  };
-
   const handleCopyText = () => {
     navigator.clipboard.writeText(getPlainText());
     setCopiedFormat('text');
     setTimeout(() => setCopiedFormat(null), 2000);
-  };
-
-  const handleCopyTable = () => {
-    navigator.clipboard.writeText(getMarkdownTable());
-    setCopiedFormat('table');
-    setTimeout(() => setCopiedFormat(null), 2000);
-  };
-
-  const handleReset = () => {
-    setTicketId(`INC-${Math.floor(10000 + Math.random() * 90000)}`);
-    setSeveridad('Sev2 (Alto impacto - Trabajo bloqueado)');
-    setItems(DEFAULT_ITEMS);
   };
 
   return (
@@ -94,16 +74,6 @@ ${items.map((item) => `| **${item.campo}** | ${item.valor.replace(/\|/g, '-')} |
         <div className="flex items-center gap-2 shrink-0 flex-wrap">
           <button
             type="button"
-            onClick={handleReset}
-            className="px-3 py-1.5 text-xs font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-800 rounded-lg transition-colors flex items-center gap-1 border border-slate-700/50"
-            title="Resetear valores de ejemplo"
-          >
-            <RefreshCw className="w-3.5 h-3.5" />
-            <span>Ejemplo por defecto</span>
-          </button>
-
-          <button
-            type="button"
             id="btn-copy-template-text"
             onClick={handleCopyText}
             className={`px-3.5 py-2 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5 shadow-lg ${
@@ -121,29 +91,6 @@ ${items.map((item) => `| **${item.campo}** | ${item.valor.replace(/\|/g, '-')} |
               <>
                 <Copy className="w-4 h-4" />
                 <span>Copiar Texto</span>
-              </>
-            )}
-          </button>
-
-          <button
-            type="button"
-            id="btn-copy-template-table"
-            onClick={handleCopyTable}
-            className={`px-3.5 py-2 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5 shadow-lg ${
-              copiedFormat === 'table'
-                ? 'bg-emerald-500 text-white shadow-emerald-500/20'
-                : 'bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 active:scale-[0.98]'
-            }`}
-          >
-            {copiedFormat === 'table' ? (
-              <>
-                <Check className="w-4 h-4" />
-                <span>¡Tabla Copiada!</span>
-              </>
-            ) : (
-              <>
-                <Table className="w-4 h-4" />
-                <span>Copiar Tabla</span>
               </>
             )}
           </button>
