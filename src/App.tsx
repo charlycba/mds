@@ -13,6 +13,9 @@ export default function App() {
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>('cuentas-y-accesos');
   const [selectedSubcategoryId, setSelectedSubcategoryId] = useState<string>('perfil-y-datos-personales');
 
+  // Fondo animado (efecto BIRDS de Vanta.js). Desactivado por defecto.
+  const [backgroundEnabled, setBackgroundEnabled] = useState(false);
+
   // Find current active category
   const activeCategory =
     CATEGORIES_DATA.find((c) => c.id === selectedCategoryId) || CATEGORIES_DATA[0];
@@ -47,7 +50,7 @@ export default function App() {
   return (
     <>
       {/* Fondo animado Vanta.js (paleta Aly) */}
-      <VantaBackground />
+      {backgroundEnabled && <VantaBackground />}
 
       <div className="relative z-10 min-h-screen text-slate-800 flex flex-col antialiased">
         {/* Pajaro companero que vuela al boton presionado */}
@@ -57,11 +60,13 @@ export default function App() {
         <Header
           categories={CATEGORIES_DATA}
           onSelectResult={handleSelectSearchResult}
+          backgroundEnabled={backgroundEnabled}
+          onToggleBackground={() => setBackgroundEnabled((v) => !v)}
         />
 
       {/* Main Content Area */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-        
+
         {/* Step 1: Top Categories Selector */}
         <section aria-label="Categorías principales">
           <CategoryTabs

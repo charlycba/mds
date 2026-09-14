@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
-import { Search, X } from 'lucide-react';
+import { Search, X, Menu } from 'lucide-react';
 import { Category } from '../types';
 import { createKnowledgeSearch } from '../lib/searchIndex';
 import headerBg from './header.jpg';
@@ -7,12 +7,21 @@ import headerBg from './header.jpg';
 interface HeaderProps {
   categories: Category[];
   onSelectResult: (categoryId: string, subcategoryId: string) => void;
+  backgroundEnabled: boolean;
+  onToggleBackground: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ categories, onSelectResult }) => {
+export const Header: React.FC<HeaderProps> = ({
+  categories,
+  onSelectResult,
+  backgroundEnabled,
+  onToggleBackground,
+}) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isOpen, setIsOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLElement>(null);
 
   // Indexed search (Fuse.js). The index is built once per categories reference.
@@ -25,8 +34,12 @@ export const Header: React.FC<HeaderProps> = ({ categories, onSelectResult }) =>
   // Close search results when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+      const target = event.target as Node;
+      if (searchRef.current && !searchRef.current.contains(target)) {
         setIsOpen(false);
+      }
+      if (menuRef.current && !menuRef.current.contains(target)) {
+        setIsMenuOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -99,8 +112,9 @@ export const Header: React.FC<HeaderProps> = ({ categories, onSelectResult }) =>
           </div>
         </div>
 
-        {/* Global Instant Search */}
-        <div className="relative w-full md:w-96" ref={searchRef}>
+        {/* Global Instant Search + Config menu */}
+        <div className="flex items-start gap-2 w-full md:w-auto">
+          <div className="relative flex-1 md:w-96 md:flex-none" ref={searchRef}>
           <div className="relative">
             <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
@@ -173,6 +187,52 @@ export const Header: React.FC<HeaderProps> = ({ categories, onSelectResult }) =>
               )}
             </div>
           )}
+          </div>
+
+          {/* Menú de configuración (hamburguesa) */}
+          <div className="relative shrink-0" ref={menuRef}>
+            <button
+              type="button"
+              aria-label="Configuración"
+              aria-haspopup="menu"
+              aria-expanded={isMenuOpen}
+              onClick={() => setIsMenuOpen((v) => !v)}
+              className="inline-flex items-center justify-center w-9 h-9 rounded-xl border border-slate-200 bg-white/80 text-slate-600 hover:text-[#008aab] hover:border-slate-300 shadow-xs transition-colors"
+            >
+              {isMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+            </button>
+
+            {isMenuOpen && (
+              <div className="absolute right-0 top-full mt-1.5 w-56 bg-white rounded-xl shadow-xl border border-slate-200 z-50 p-3">
+                <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-1 pb-2">
+                  Configuración
+                </div>
+                <button
+                  type="button"
+                  role="switch"
+                  aria-checked={backgroundEnabled}
+                  aria-label="Fondo"
+                  onClick={onToggleBackground}
+                  className="w-full flex items-center justify-between gap-3 px-1.5 py-1.5 rounded-lg hover:bg-slate-50 transition-colors group"
+                >
+                  <span className="text-xs font-semibold text-slate-700 group-hover:text-slate-900">
+                    Fondo
+                  </span>
+                  <span
+                    className={`relative inline-flex h-4 w-8 shrink-0 items-center rounded-full transition-colors ${
+                      backgroundEnabled ? 'bg-[#008aab]' : 'bg-slate-300'
+                    }`}
+                  >
+                    <span
+                      className={`inline-block h-3 w-3 transform rounded-full bg-white shadow-sm transition-transform ${
+                        backgroundEnabled ? 'translate-x-4' : 'translate-x-0.5'
+                      }`}
+                    />
+                  </span>
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </header>
