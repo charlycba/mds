@@ -116,40 +116,6 @@ export const CATEGORIES_DATA: Category[] = [
         }
       },
       {
-        id: 'acceso-y-contrasenas',
-        name: 'Acceso y contraseñas',
-        descripcionBreve: 'Restablecimiento de claves, validación de credenciales y acceso bloqueado.',
-        data: {
-          aplicaA: 'Todos los usuarios',
-          uso: 'MDS - Resolución sin escalar',
-          tituloSintomas: 'Síntomas Comunes',
-          tituloCausas: 'Causas Probables',
-          tituloPasos: 'Solución Paso a Paso',
-          tituloPrevencion: 'Consejos de Prevención',
-          sintomas: [
-            'No me deja entrar',
-            'Olvidé mi contraseña'
-          ],
-          causas: [
-            'Contraseña incorrecta u olvidada.',
-            'Cuenta bloqueada por intentos fallidos (ver bloqueo).',
-            'Correo de restablecimiento que no llega (ver correos).'
-          ],
-          pasos: [
-            '1. Verificar que el usuario use el usuario/correo correcto (a veces entra con otro correo).',
-            '2. Usar la opción "Olvidé mi contraseña" en la pantalla de login.',
-            '3. Indicar revisar la carpeta de spam si no llega el enlace de restablecimiento.',
-            '4. Si la cuenta aparece bloqueada, seguir la guía en Bloqueo de cuenta.',
-            '5. Recomendar definir una contraseña segura con mayúsculas, números y símbolos.'
-          ],
-          prevencion: [
-            'No compartir credenciales.',
-            'Activar 2FA si está disponible.',
-            'Guardar la contraseña en un gestor, no en notas personales.'
-          ]
-        }
-      },
-      {
         id: 'roles-y-permisos',
         name: 'Roles y permisos',
         descripcionBreve: 'Acceso restringido a módulos, permisos insuficientes y cambios de rol.',

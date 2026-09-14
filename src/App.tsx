@@ -7,12 +7,11 @@ import { KnowledgeCardsGrid } from './components/KnowledgeCardsGrid';
 import { EscalationTemplateWidget } from './components/EscalationTemplateWidget';
 import { VantaBackground } from './components/VantaBackground';
 import { BirdCompanion } from './components/BirdCompanion';
-import { HelpCircle, ChevronRight, Layers, ExternalLink } from 'lucide-react';
 
 export default function App() {
-  // Start on 'cuentas-y-accesos' and 'acceso-y-contrasenas' to match the user's reference image directly
+  // Start on 'cuentas-y-accesos' and its first subcategory
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>('cuentas-y-accesos');
-  const [selectedSubcategoryId, setSelectedSubcategoryId] = useState<string>('acceso-y-contrasenas');
+  const [selectedSubcategoryId, setSelectedSubcategoryId] = useState<string>('perfil-y-datos-personales');
 
   // Find current active category
   const activeCategory =
@@ -63,20 +62,6 @@ export default function App() {
       {/* Main Content Area */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
         
-        {/* Intro / Context Pill */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-slate-500 pb-1">
-          <div className="flex items-center gap-1.5 flex-wrap">
-            <span className="font-semibold text-slate-700">Ruta de navegación:</span>
-            <span className="text-slate-400">Inicio</span>
-            <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-            <span className="text-slate-600 font-medium">{activeCategory.name}</span>
-            <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-            <span className="text-[#00758d] font-bold bg-[#e6f4f7] px-2 py-0.5 rounded-md border border-[#b9dfe6]">
-              {activeSubcategory.name}
-            </span>
-          </div>
-        </div>
-
         {/* Step 1: Top Categories Selector */}
         <section aria-label="Categorías principales">
           <CategoryTabs
